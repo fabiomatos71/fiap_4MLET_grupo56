@@ -268,7 +268,13 @@ class SiteEmbrapa:
         """
         produtividadesEmCache = self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
         if len(produtividadesEmCache) == 0:
-            produtividadesEmCache = self.carregaRepoProdutividadePorAnoFromWebscrapping(ano)
+            try:
+                produtividadesEmCache = self.carregaRepoProdutividadePorAnoFromWebscrapping(ano)
+            except Exception as erro:
+                self.carregaRepositoriosFromArquivosCSV()
+                produtividadesEmCache = self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
+            finally:
+                return produtividadesEmCache
         return produtividadesEmCache
 
     def obterProducaoTotalDeCategoriaPorAno(self, nomeCategoria: str, ano: int) -> int:
@@ -278,8 +284,13 @@ class SiteEmbrapa:
         """
         produtividadesEmCache = self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
         if len(produtividadesEmCache) == 0:
-            produtividadesEmCache = self.carregaRepoProdutividadePorAnoFromWebscrapping(ano)
-
+            try:
+                produtividadesEmCache = self.carregaRepoProdutividadePorAnoFromWebscrapping(ano)
+            except Exception as erro:
+                self.carregaRepositoriosFromArquivosCSV()
+                produtividadesEmCache = self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
+            finally:
+                return produtividadesEmCache
         categoria = self.repositorio_categorias_prod.buscar_categoria_por_nome(nomeCategoria)
         if categoria == None:
             return 0
@@ -294,7 +305,13 @@ class SiteEmbrapa:
         """
         processamentoEmCache = self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
         if len(processamentoEmCache) == 0:
-            processamentoEmCache = self.carregaRepoProcessamentoPorAnoTipoUvaFromWebscrapping(ano, tipo_uva)
+            try:
+                processamentoEmCache = self.carregaRepoProcessamentoPorAnoTipoUvaFromWebscrapping(ano, tipo_uva)
+            except Exception as erro:
+                self.carregaRepositoriosFromArquivosCSV()
+                processamentoEmCache = self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
+            finally:
+                return processamentoEmCache
         return processamentoEmCache
 
     def obterProcessamentoTotalDeCategoriaPorAnoTipoUva(self, nomeCategoria: str, ano: int, tipo_uva: EnumTipoUva_proc) -> int:
@@ -304,7 +321,13 @@ class SiteEmbrapa:
         """
         processamentoEmCache = self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
         if len(processamentoEmCache) == 0:
-            processamentoEmCache = self.carregaRepoProcessamentoPorAnoTipoUvaFromWebscrapping(ano, tipo_uva)
+            try:
+                processamentoEmCache = self.carregaRepoProcessamentoPorAnoTipoUvaFromWebscrapping(ano, tipo_uva)
+            except Exception as erro:
+                self.carregaRepositoriosFromArquivosCSV()
+                processamentoEmCache = self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
+            finally:
+                return processamentoEmCache
 
         categoria = self.repositorio_categorias_proc.buscar_categoria_por_nome(nomeCategoria)
         if categoria == None:
@@ -320,7 +343,13 @@ class SiteEmbrapa:
         """
         comercializacoesEmCache = self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
         if len(comercializacoesEmCache) == 0:
-            comercializacoesEmCache = self.carregaRepoComercializacaoPorAnoFromWebscrapping(ano)
+            try:
+                comercializacoesEmCache = self.carregaRepoComercializacaoPorAnoFromWebscrapping(ano)
+            except Exception as erro:
+                self.carregaRepositoriosFromArquivosCSV()
+                comercializacoesEmCache = self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
+            finally:
+                return comercializacoesEmCache
         return comercializacoesEmCache
 
     def obterComercializacaoTotalDeCategoriaPorAno(self, nomeCategoria: str, ano: int) -> int:
@@ -330,8 +359,11 @@ class SiteEmbrapa:
         """
         comercializacoesEmCache = self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
         if len(comercializacoesEmCache) == 0:
-            comercializacoesEmCache = self.carregaRepoComercializacaoPorAnoFromWebscrapping(ano)
-
+            try:
+                comercializacoesEmCache = self.carregaRepoComercializacaoPorAnoFromWebscrapping(ano)
+            except Exception as erro:
+                self.carregaRepositoriosFromArquivosCSV()
+                comercializacoesEmCache = self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
         categoria = self.repositorio_categorias_com.buscar_categoria_por_nome(nomeCategoria)
         if categoria == None:
             return 0
@@ -346,7 +378,13 @@ class SiteEmbrapa:
         """
         importacaoEmCache = self.repositorio_importacoes.buscar_importacoesPorAnoCategoria(ano, categoria)
         if len(importacaoEmCache) == 0:
-            importacaoEmCache = self.carregaRepoImportacaoPorAnoCategoriaFromWebscrapping(ano, categoria)
+            try:
+                importacaoEmCache = self.carregaRepoImportacaoPorAnoCategoriaFromWebscrapping(ano, categoria)
+            except Exception as erro:
+                self.carregaRepositoriosFromArquivosCSV()
+                importacaoEmCache = self.repositorio_importacoes.buscar_importacoesPorAnoCategoria(ano, categoria)
+            finally:
+                return importacaoEmCache
         return importacaoEmCache
 
     def obterExportacaoPorAnoCategoria(self, ano: int, categoria: EnumCategoria_im_ex) -> List[ExportacaoAnual]:
@@ -358,7 +396,13 @@ class SiteEmbrapa:
             raise Exception(f"Categoria [{categoria} não existente para Exportações.]")
         exportacaoEmCache = self.repositorio_exportacoes.buscar_exportacoesPorAnoCategoria(ano, categoria)
         if len(exportacaoEmCache) == 0:
-            exportacaoEmCache = self.carregaRepoExportacaoPorAnoCategoriaFromWebscrapping(ano, categoria)
+            try:
+                exportacaoEmCache = self.carregaRepoExportacaoPorAnoCategoriaFromWebscrapping(ano, categoria)
+            except Exception as erro:
+                self.carregaRepositoriosFromArquivosCSV()
+                exportacaoEmCache = self.repositorio_exportacoes.buscar_exportacoesPorAnoCategoria(ano, categoria)
+            finally:
+                return exportacaoEmCache
         return exportacaoEmCache
 
     def carregaRepoProdutividadePorAnoFromWebscrapping(self, ano: int) -> List[ProdutividadeAnual]:
