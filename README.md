@@ -9,6 +9,8 @@ Site utilizado: http://vitibrasil.cnpuv.embrapa.br/
 
 ## Estrutura do Projeto
 
+![](./Diagrama_TechChallenge_grupo56.png)
+
 ### Camada Cliente
 A API é projetada para ser consumida por uma aplicação cliente, que pode fazer requisições HTTP para as rotas expostas.
 
