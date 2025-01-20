@@ -1,0 +1,8 @@
+* Repositório no github
+https://github.com/fabiomatos71/fiap_4MLET_grupo56
+
+* link do módulo criado e publicado no pypi.org
+https://pypi.org/project/fiap-lib-grupo56/
+
+* link da publicação no Vercel
+
