@@ -1,11 +1,6 @@
 import csv
-# import locale
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
+import requests
+from bs4 import BeautifulSoup
 from typing import List
 from importlib.resources import files
 from modelo_dados.producao import Categoria_prod, Produto_prod, ProdutividadeAnual
@@ -367,7 +362,7 @@ class SiteEmbrapa:
         return exportacaoEmCache
 
     def carregaRepoProdutividadePorAnoFromWebscrapping(self, ano: int) -> List[ProdutividadeAnual]:
-        tags_tr_do_tbody = self.webscrapping.obterProducaoPorAno(ano)
+        rows = self.webscrapping.obterProducaoPorAno(ano)
 
         categoriaAtual: Categoria_prod = None
         produtoAtual: Produto_prod = None
@@ -376,27 +371,30 @@ class SiteEmbrapa:
         """
             Carrega self.repositorio_produtos_prod, self.repositorio_categorias_prod e self.repositorio_produtividades com os elementos vindos do webscrapping
         """
-        for tag_tr in tags_tr_do_tbody:
-            tags_td = tag_tr.find_elements(By.TAG_NAME, "td")
-            if(len(tags_td) == 2):
-                if(tags_td[0].get_attribute("class") == "tb_item"):
-                    nomeCategoria = tags_td[0].text
+        for row in rows:
+            # Encontra todas as células da linha
+            cells = row.find_all("td")
+            if len(cells) == 2:
+                texto_coluna_0 = cells[0].text.strip()
+                texto_coluna_1 = cells[1].text.strip()
+                if "tb_item" in cells[0]['class']:
+                    nomeCategoria = texto_coluna_0
                     categoriaAtual = self.repositorio_categorias_prod.buscar_categoria_por_nome(nomeCategoria)
                     if categoriaAtual == None:
                         categoriaAtual = Categoria_prod(nomeCategoria)
                         self.repositorio_categorias_prod.adicionar_categoria(categoriaAtual)
-                elif(tags_td[0].get_attribute("class") == "tb_subitem"):
-                    nomeProduto = tags_td[0].text
+                elif "tb_subitem" in cells[0]['class']:
+                    nomeProduto = texto_coluna_0
                     produtoAtual = self.repositorio_produtos_prod.buscar_produto_por_nome_categoria(nomeProduto, categoriaAtual)
                     if produtoAtual == None:
                         produtoAtual = Produto_prod(nomeProduto, categoriaAtual)
                         self.repositorio_produtos_prod.adicionar_produto(produtoAtual)
-                    produtividadeAnualAtual = ProdutividadeAnual(ano, tags_td[1].text, produtoAtual)
+                    produtividadeAnualAtual = ProdutividadeAnual(ano, texto_coluna_1, produtoAtual)
                     self.repositorio_produtividades.adicionar_produtividade(produtividadeAnualAtual)
         return self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
 
     def carregaRepoProcessamentoPorAnoTipoUvaFromWebscrapping(self, ano: int, tipo_uva: EnumTipoUva_proc) -> List[ProcessamentoAnual]:
-        tags_tr_do_tbody = self.webscrapping.obterProcessamentoPorAno_TipoUva(ano, tipo_uva)
+        rows = self.webscrapping.obterProcessamentoPorAno_TipoUva(ano, tipo_uva)
 
         categoriaAtual: Categoria_proc = None
         cultivarAtual: Cultivar_proc = None
@@ -405,11 +403,13 @@ class SiteEmbrapa:
         """
             Carrega self.repositorio_produtos_proc, self.repositorio_categorias_proc e self.repositorio_processamentos com os elementos vindos do webscrapping
         """
-        for tag_tr in tags_tr_do_tbody:
-            tags_td = tag_tr.find_elements(By.TAG_NAME, "td")
-            if(len(tags_td) == 2):
-                if(tags_td[0].get_attribute("class") == "tb_item"):
-                    nomeCategoria = tags_td[0].text
+        for row in rows:
+            cells = row.find_all("td")
+            if(len(cells) == 2):
+                texto_coluna_0 = cells[0].text.strip()
+                texto_coluna_1 = cells[1].text.strip()
+                if "tb_item" in cells[0]['class']:
+                    nomeCategoria = texto_coluna_0
                     categoriaAtual = self.repositorio_categorias_proc.buscar_categoria_por_nome(nomeCategoria)
                     if categoriaAtual == None:
                         categoriaAtual = Categoria_proc(nomeCategoria)
@@ -422,20 +422,20 @@ class SiteEmbrapa:
                         if cultivarAtual == None:
                             cultivarAtual = Cultivar_proc(nomeCultivar, categoriaAtual, tipo_uva)
                             self.repositorio_cultivares_proc.adicionar_cultivar(cultivarAtual)
-                        processamentoAnualAtual = ProcessamentoAnual(ano, tags_td[1].text, cultivarAtual)
+                        processamentoAnualAtual = ProcessamentoAnual(ano, texto_coluna_1, cultivarAtual)
                         self.repositorio_processamentos.adicionar_processamento(processamentoAnualAtual)
-                elif(tags_td[0].get_attribute("class") == "tb_subitem"):
-                    nomeCultivar = tags_td[0].text
+                elif "tb_subitem" in cells[0]['class']:
+                    nomeCultivar = texto_coluna_0
                     cultivarAtual = self.repositorio_cultivares_proc.buscar_cultivar_por_nome_categoria_tipo(nomeCultivar, categoriaAtual, tipo_uva)
                     if cultivarAtual == None:
                         cultivarAtual = Cultivar_proc(nomeCultivar, categoriaAtual, tipo_uva)
                         self.repositorio_cultivares_proc.adicionar_cultivar(cultivarAtual)
-                    processamentoAnualAtual = ProcessamentoAnual(ano, tags_td[1].text, cultivarAtual)
+                    processamentoAnualAtual = ProcessamentoAnual(ano, texto_coluna_1, cultivarAtual)
                     self.repositorio_processamentos.adicionar_processamento(processamentoAnualAtual)
         return self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
 
     def carregaRepoComercializacaoPorAnoFromWebscrapping(self, ano: int) -> List[ProdutividadeAnual]:
-        tags_tr_do_tbody = self.webscrapping.obterComercializacaoPorAno(ano)
+        rows = self.webscrapping.obterComercializacaoPorAno(ano)
 
         categoriaAtual: Categoria_prod = None
         produtoAtual: Produto_prod = None
@@ -445,10 +445,12 @@ class SiteEmbrapa:
         """
             Carrega self.repositorio_produtos_com, self.repositorio_categorias_com e self.repositorio_comercializacoes com os elementos vindos do webscrapping
         """
-        for tag_tr in tags_tr_do_tbody:
-            tags_td = tag_tr.find_elements(By.TAG_NAME, "td")
-            if(len(tags_td) == 2):
-                if tags_td[0].get_attribute("class") == "tb_item":
+        for row in rows:
+            cells = row.find_all("td")
+            if len(cells) == 2:
+                texto_coluna_0 = cells[0].text.strip()
+                texto_coluna_1 = cells[1].text.strip()
+                if "tb_item" in cells[0]['class']:
                     if ultima_tag_foi_categoria == True:
                         # variáveis nomeCategoria e categoriaAtual estão com valores da linha anterior(linha de categoria que não tem produtos listados abaixo)
                         nomeProduto = nomeCategoria 
@@ -459,26 +461,26 @@ class SiteEmbrapa:
                         comercializacaoAnualAtual = ComercializacaoAnual(ano, quantidadeCategoria, produtoAtual) # quantidadeCategoria foi setado na linha de categoria anterior.  No loop anterior do for.
                         self.repositorio_comercializacoes.adicionar_comercializacao(comercializacaoAnualAtual)
                     # processa os dados da linha atual (tag_tr) do tbody do site.  Linha da categoria atual
-                    nomeCategoria = tags_td[0].text
-                    quantidadeCategoria = tags_td[1].text
+                    nomeCategoria = texto_coluna_0
+                    quantidadeCategoria = texto_coluna_1
                     categoriaAtual = self.repositorio_categorias_com.buscar_categoria_por_nome(nomeCategoria)
                     if categoriaAtual == None:
                         categoriaAtual = Categoria_com(nomeCategoria)
                         self.repositorio_categorias_com.adicionar_categoria(categoriaAtual)
                     ultima_tag_foi_categoria = True
-                elif(tags_td[0].get_attribute("class") == "tb_subitem"):
-                    nomeProduto = tags_td[0].text
+                elif "tb_subitem" in cells[0]['class']:
+                    nomeProduto = texto_coluna_0
                     produtoAtual = self.repositorio_produtos_com.buscar_produto_por_nome_categoria(nomeProduto, categoriaAtual)
                     if produtoAtual == None:
                         produtoAtual = Produto_com(nomeProduto, categoriaAtual)
                         self.repositorio_produtos_com.adicionar_produto(produtoAtual)
-                    comercializacaoAnualAtual = ComercializacaoAnual(ano, tags_td[1].text, produtoAtual)
+                    comercializacaoAnualAtual = ComercializacaoAnual(ano, texto_coluna_1, produtoAtual)
                     self.repositorio_comercializacoes.adicionar_comercializacao(comercializacaoAnualAtual)
                     ultima_tag_foi_categoria = False
         return self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
 
     def carregaRepoImportacaoPorAnoCategoriaFromWebscrapping(self, ano: int, categoria: EnumCategoria_im_ex) -> List[ImportacaoAnual]:
-        tags_tr_do_tbody = self.webscrapping.obterImportacaoPorAno_categoria(ano, categoria)
+        rows = self.webscrapping.obterImportacaoPorAno_categoria(ano, categoria)
 
         paisAtual: Pais = None
         importacaoAnualAtual: ImportacaoAnual = None
@@ -486,12 +488,12 @@ class SiteEmbrapa:
         """
             Carrega self.repositorio_importacoes, self.repositorio_categorias_im_ex e self.repositorio_paises com os elementos vindos do webscrapping
         """
-        for tag_tr in tags_tr_do_tbody:
-            tags_td = tag_tr.find_elements(By.TAG_NAME, "td")
-            if(len(tags_td) == 3):
-                nomePais = tags_td[0].text
-                quantidadeAtual = tags_td[1].text
-                valorAtual = tags_td[2].text
+        for row in rows:
+            cells = row.find_all("td")
+            if(len(cells) == 3):
+                nomePais = cells[0].text.strip()
+                quantidadeAtual =cells[1].text.strip()
+                valorAtual = cells[2].text.strip()
                 paisAtual = self.repositorio_paises.buscar_pais_por_nome(nomePais)
                 if paisAtual == None:
                     paisAtual = Pais(nomePais)
@@ -501,7 +503,7 @@ class SiteEmbrapa:
         return self.repositorio_importacoes.buscar_importacoesPorAnoCategoria(ano, categoria)
 
     def carregaRepoExportacaoPorAnoCategoriaFromWebscrapping(self, ano: int, categoria: EnumCategoria_im_ex) -> List[ExportacaoAnual]:
-        tags_tr_do_tbody = self.webscrapping.obterExportacaoPorAno_categoria(ano, categoria)
+        rows = self.webscrapping.obterExportacaoPorAno_categoria(ano, categoria)
 
         paisAtual: Pais = None
         exportacaoAnualAtual: ExportacaoAnual = None
@@ -509,12 +511,12 @@ class SiteEmbrapa:
         """
             Carrega self.repositorio_importacoes, self.repositorio_categorias_im_ex e self.repositorio_paises com os elementos vindos do webscrapping
         """
-        for tag_tr in tags_tr_do_tbody:
-            tags_td = tag_tr.find_elements(By.TAG_NAME, "td")
-            if(len(tags_td) == 3):
-                nomePais = tags_td[0].text
-                quantidadeAtual = tags_td[1].text
-                valorAtual = tags_td[2].text
+        for row in rows:
+            cells = row.find_all("td")
+            if(len(cells) == 3):
+                nomePais = cells[0].text.strip()
+                quantidadeAtual =cells[1].text.strip()
+                valorAtual = cells[2].text.strip()
                 paisAtual = self.repositorio_paises.buscar_pais_por_nome(nomePais)
                 if paisAtual == None:
                     paisAtual = Pais(nomePais)
@@ -530,30 +532,16 @@ class WebscrappingSiteEmbrapa:
     """
     def __init__(self, urlBase: str):
         self.UrlBase = urlBase
-                # Defina as opções do navegador
-        chrome_options = Options()
-        chrome_options.add_argument("--start-maximized")
-        chrome_options.add_argument("--disable-infobars")
-        chrome_options.add_argument("--disable-extensions")
-        # Adiciona o modo headless
-        chrome_options.add_argument("--headless")
-        # (Opcional) Evita possíveis erros de hardware/gpu
-        # chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-
-        # O webdriver_manager cuida de baixar a versão correta do ChromeDriver
-        self.driverChrome = webdriver.Chrome(service=Service(ChromeDriverManager(path="/tmp").install()), options=chrome_options)
 
     def obterProducaoPorAno(self, ano: int) -> list:
         """
         Realiza o Webscrapping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
 
         """
-        url = f"{self.UrlBase}?ano={ano}&opcao=opt_02" 
-        xpath = "/html/body/table[4]/tbody/tr/td[2]/div/div/table[1]/tbody/tr"
+        url = f"{self.UrlBase}?ano={ano}&opcao=opt_02"
+        cssSelector = "table.tb_base.tb_dados tbody tr"
 
-        retorno = self.obterElementosTR(url, xpath)
+        retorno = self.obterElementosTR(url, cssSelector)
 
         return retorno
 
@@ -574,9 +562,9 @@ class WebscrappingSiteEmbrapa:
             subopcao_tipouva = "subopt_04"
 
         url = f"{self.UrlBase}?ano={ano}&opcao=opt_03&subopcao={subopcao_tipouva}" 
-        xpath = "/html/body/table[4]/tbody/tr/td[2]/div/div/table[1]/tbody/tr"
+        cssSelector = "table.tb_base.tb_dados tbody tr"
 
-        retorno = self.obterElementosTR(url, xpath)
+        retorno = self.obterElementosTR(url, cssSelector)
 
         return retorno
 
@@ -586,9 +574,9 @@ class WebscrappingSiteEmbrapa:
 
         """
         url = f"{self.UrlBase}?ano={ano}&opcao=opt_04" 
-        xpath = "/html/body/table[4]/tbody/tr/td[2]/div/div/table[1]/tbody/tr"
+        cssSelector = "table.tb_base.tb_dados tbody tr"
 
-        retorno = self.obterElementosTR(url, xpath)
+        retorno = self.obterElementosTR(url, cssSelector)
 
         return retorno
 
@@ -611,9 +599,9 @@ class WebscrappingSiteEmbrapa:
             subopcao_categoria = "subopt_99"
 
         url = f"{self.UrlBase}?ano={ano}&opcao=opt_05&subopcao={subopcao_categoria}" 
-        xpath = "/html/body/table[4]/tbody/tr/td[2]/div/div/table[1]/tbody/tr"
+        cssSelector = "table.tb_base.tb_dados tbody tr"
 
-        retorno = self.obterElementosTR(url, xpath)
+        retorno = self.obterElementosTR(url, cssSelector)
 
         return retorno
 
@@ -634,23 +622,19 @@ class WebscrappingSiteEmbrapa:
             subopcao_categoria = "subopt_99"
 
         url = f"{self.UrlBase}?ano={ano}&opcao=opt_06&subopcao={subopcao_categoria}" 
-        xpath = "/html/body/table[4]/tbody/tr/td[2]/div/div/table[1]/tbody/tr"
+        cssSelector = "table.tb_base.tb_dados tbody tr"
 
-        retorno = self.obterElementosTR(url, xpath)
+        retorno = self.obterElementosTR(url, cssSelector)
 
         return retorno
 
-    def obterElementosTR(self, url: str, xpath_tbody: str) -> list:
+    def obterElementosTR(self, url: str, cssSelector: str) -> list:
         """
         Abre a página da url e obtem lista de WebElement
 
         """
-        # Abre a página no navegador
-        self.driverChrome.get(url)
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, "html.parser")
+        rows = soup.select(cssSelector)
 
-        # Encontra todos os elementos <a> que têm links
-        # link_elements = driver.find_elements('tag name', 'a')
-
-        tags_tr_do_tbody = self.driverChrome.find_elements(By.XPATH, xpath_tbody)
-
-        return tags_tr_do_tbody
+        return rows

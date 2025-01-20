@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
    name='fiap_lib_grupo56',
-   version='0.2.5',
+   version='0.3.0',
    packages=find_packages(),
    description='Biblioteca para o trabalho Tech Challenge do grupo 56 da 4MLET',
    author='Fabio Vargas Matos',
