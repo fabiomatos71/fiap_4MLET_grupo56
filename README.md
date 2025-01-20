@@ -88,16 +88,27 @@ As principais dependências incluem:
 
 ```
 .
-├── app.py                         # Código principal da API
-├── fiap_lib_grupo56/
-│   ├── site_embrapa.py            # Classe central da lógica do servidor
-│   ├── arquivos_csv/              # Arquivos CSV com dados de backup
-│   ├── modelo_dados/              # Classes para manipulação de dados
-│   ├── __init__.py                # Arquivo de inicialização do pacote
+├── api_grupo56/                   # PASTA RAIZ DO PROJETO DA API. (abrir esta pasta no VS)
+│   ├── .venv                      # python
+│   ├── app.py                     # Código principal da API
+│   └── requirements.txt           # Dependências do projeto
+├── biblioteca/                    
+│   ├── fiap_lib_grupo56/          # PASTA RAIZ DO PROJETO DA BIBLIOTECA (https://pypi.org/project/fiap-lib-grupo56/). (abrir esta pasta no VS)
+│   │   ├── .venv                  # python da biblioteca
+│   │   ├── modelo_dados/          # Classes para tratamento de dados
+│   │   │   ├── __init__.py        # Arquivo de inicialização do pacote
+│   │   │   └── ...(*.py)          # Classes do modelo de dados
+│   │   ├── site_embrapa/           
+│   │   │   ├── __init__.py        # Arquivo de inicialização do pacote
+│   │   │   ├── site_embrapa.py    # Classe central da lógica do servidor
+│   │   │   └── arquivos_csv/      # Arquivos CSV com dados de backup
+│   │   │       └── ...(*.CSV)     # Arquivos CSV para fallback
+│   │   ├── anotacoes.txt          # Orientações de como publicar fiap_lib_grupo56 no pypi.org
+│   │   ├── MANIFEST.in            # Manifesto para inclusão dos arquivos .CSV no pacote
+│   │   ├── setup.py               # Configuração do fiap_lib_grupo56 para o pypi.org
+│   │   └── requirements.txt       # Dependências do projeto
 │   └── ...
-├── requirements.txt               # Dependências do projeto
-├── README.md                      # Documentação do projeto
-└── ...
+└── README.md                      # Descrição do projeto no github.  Este arquivo.
 ```
 
 ## Observações
