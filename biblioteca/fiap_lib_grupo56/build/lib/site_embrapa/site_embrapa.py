@@ -1,5 +1,5 @@
 import csv
-import locale
+# import locale
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -24,7 +24,7 @@ class SiteEmbrapa:
     
     """
     def __init__(self):
-        locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+        # locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
         self.webscrapping = WebscrappingSiteEmbrapa("http://vitibrasil.cnpuv.embrapa.br/index.php")
         self.inicializa_repositorios()
 
