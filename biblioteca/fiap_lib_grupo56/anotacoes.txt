@@ -1,0 +1,15 @@
+* Para criar e atualizar a biblioteca no Pypi
+
+* Pacotes necessários:
+
+# pip install setuptools wheel twine
+
+* Estando na pasta da aplicação biblioteca (pasta com o setup.py)
+
+* Para gerar os Pacotes: gera o dist da aplicação "biblioteca"
+
+# python setup.py sdist bdist_wheel
+
+* Para subir para o Pypi
+
+# twine upload dist/*

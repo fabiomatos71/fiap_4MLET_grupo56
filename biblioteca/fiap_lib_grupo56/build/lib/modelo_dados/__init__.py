@@ -1,0 +1,2 @@
+from .producao import RepositorioCategorias_prod, RepositorioProdutividadesAnuais, RepositorioProdutos_prod, Categoria_prod, ProdutividadeAnual, Produto_prod
+from .processamento import RepositorioCategorias_proc, RepositorioCultivar_proc, RepositorioProcessamentosAnuais, Categoria_proc, ProcessamentoAnual, Cultivar_proc
