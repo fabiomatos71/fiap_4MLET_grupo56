@@ -536,12 +536,14 @@ class WebscrappingSiteEmbrapa:
         chrome_options.add_argument("--disable-infobars")
         chrome_options.add_argument("--disable-extensions")
         # Adiciona o modo headless
-        # chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--headless")
         # (Opcional) Evita possíveis erros de hardware/gpu
         # chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
 
         # O webdriver_manager cuida de baixar a versão correta do ChromeDriver
-        self.driverChrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+        self.driverChrome = webdriver.Chrome(service=Service(ChromeDriverManager(path="/tmp").install()), options=chrome_options)
 
     def obterProducaoPorAno(self, ano: int) -> list:
         """
