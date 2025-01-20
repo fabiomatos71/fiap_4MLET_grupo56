@@ -1,6 +1,6 @@
 from datetime import timedelta
 import requests
-from flask import Flask, request, jsonify
+from flask import Flask, redirect, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flasgger import Swagger
 import json
@@ -92,6 +92,11 @@ def json_response_msg_erro(data, status=200):
         status=status,
         mimetype='application/json'
     )
+
+# Redirecionar da raiz para o Swagger
+@app.route("/")
+def redirect_to_swagger():
+    return redirect("/swagger")
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -252,7 +257,9 @@ def producao():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         # Busca produtividades para o ano informado
         produtividades = siteEmbrapa.obterProducoesPorAno(ano)
@@ -318,7 +325,9 @@ def producao_por_categoria():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         # Obtém o parâmetro 'categoria'
         nome_categoria = request.args.get('categoria', type=str)
@@ -400,7 +409,9 @@ def processamento_viniferas():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return processamento(ano, EnumTipoUva_proc.VINIFERAS)
     except Exception as e:
@@ -462,7 +473,9 @@ def processamento_americanas_hibridas():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return processamento(ano, EnumTipoUva_proc.AMERICANASEHIBRIDAS)
     except Exception as e:
@@ -524,7 +537,9 @@ def processamento_uvas_mesa():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return processamento(ano, EnumTipoUva_proc.UVASDEMESA)
     except Exception as e:
@@ -572,7 +587,9 @@ def processamento_sem_classificacao():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return processamento(ano, EnumTipoUva_proc.SEMCLASSIFICACAO)
     except Exception as e:
@@ -659,7 +676,9 @@ def comercializacao():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         # Busca comercializações para o ano informado
         comercializacoes = siteEmbrapa.obterComercializacoesPorAno(ano)
@@ -738,7 +757,9 @@ def importacao_vinhos_mesa():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return importacao(ano, EnumCategoria_im_ex.VINHOSDEMESA)
     except Exception as e:
@@ -800,7 +821,9 @@ def importacao_espumantes():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return importacao(ano, EnumCategoria_im_ex.ESPUMANTES)
     except Exception as e:
@@ -924,7 +947,9 @@ def importacao_uvas_passas():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return importacao(ano, EnumCategoria_im_ex.UVASPASSAS)
     except Exception as e:
@@ -986,7 +1011,9 @@ def importacao_suco_uva():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return importacao(ano, EnumCategoria_im_ex.SUCODEUVA)
     except Exception as e:
@@ -1077,7 +1104,9 @@ def exportacao_vinhos_mesa():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return exportacao(ano, EnumCategoria_im_ex.VINHOSDEMESA)
     except Exception as e:
@@ -1139,7 +1168,9 @@ def exportacao_espumantes():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return exportacao(ano, EnumCategoria_im_ex.ESPUMANTES)
     except Exception as e:
@@ -1201,7 +1232,9 @@ def exportacao_uvas_frescas():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return exportacao(ano, EnumCategoria_im_ex.UVASFRESCAS)
     except Exception as e:
@@ -1263,7 +1296,9 @@ def exportacao_suco_uva():
         # Obtém o parâmetro 'ano'
         ano = request.args.get('ano', type=int)
         if ano is None:
-            return json_response_msg_erro({"error": "O parâmetro 'ano' é obrigatório."}, 400)
+            return json_response_msg_erro(msg_sem_ano(), 400)
+        if ano_fora_faixa(ano):
+            return json_response_msg_erro(msg_ano_fora(), 400)
 
         return exportacao(ano, EnumCategoria_im_ex.SUCODEUVA)
     except Exception as e:
@@ -1296,6 +1331,16 @@ def exportacao(ano: int, categoria: EnumCategoria_im_ex):
             mimetype='application/json')
     except Exception as e:
         return json_response_msg_erro({"error": str(e)}, 500)
-
+    
+def ano_fora_faixa(ano: int) -> bool:
+    if ano < 1970 or ano > 2023:
+        return True
+    else:
+        return False
+    
+def msg_ano_fora():
+    return {"error": "O parâmetro 'ano' deve estar na faixa de 1970 a 2023, inclusive."}
+def msg_sem_ano():
+    return {"error": "O parâmetro 'ano' é obrigatório."}
 if __name__ == '__main__':
     app.run(debug=True)
