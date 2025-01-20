@@ -1,6 +1,6 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.2
 Name: fiap_lib_grupo56
-Version: 0.2.2
+Version: 0.2.3
 Summary: Biblioteca para o trabalho Tech Challenge do grupo 56 da 4MLET
 Home-page: https://github.com/fabiomatos71/fiap_4MLET_grupo56
 Author: Fabio Vargas Matos
@@ -8,5 +8,11 @@ Author-email: fabiomatos@baneses.com.br
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
-Requires-Python: >=3.10
+Requires-Python: >=3.12.0
 License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
