@@ -29,11 +29,11 @@ A lógica do servidor está organizada em:
 ### Funcionamento padrão
 A aplicação servidora inicia sem nenhum dado carregado em memória. À medida que os endpoints relacionados à Produção, Processamento, Comercialização, Importação e Exportação são acessados pela aplicação cliente, a API realiza o web scraping no site da Embrapa, obtendo os dados específicos solicitados. Os dados obtidos são armazenados em memória, permitindo que futuras solicitações sejam atendidas de forma mais rápida, sem a necessidade de novas consultas ao site. Entretanto, caso a aplicação seja reiniciada, a memória é limpa, e as informações voltarão a ser buscadas diretamente no site da Embrapa.
 
-Como alternativa ao web scraping, a API conta com um conjunto de arquivos CSV disponibilizados pela Embrapa, contendo todos os dados utilizados para alimentar o site oficial. Esses arquivos foram baixados e são mantidos na aplicação para garantir o funcionamento da API em cenários onde o site da Embrapa esteja offline ou instável. Nessas situações, a API utiliza os dados dos arquivos CSV para responder às requisições.
+Como alternativa ao web scraping, a API conta com um conjunto de arquivos .CSV disponibilizados pela Embrapa, contendo todos os dados utilizados para alimentar o site oficial. Esses arquivos foram baixados e são mantidos na aplicação para garantir o funcionamento da API em cenários onde o site da Embrapa esteja offline ou instável. Nessas situações, a API utiliza os dados dos arquivos CSV para responder às requisições.
 
-Além disso, existe um endpoint especial na API: /vitibrasil/carrega_csv. Quando chamado, ele carrega todos os dados contidos nos arquivos CSV diretamente na memória da aplicação. Após essa operação, todas as requisições subsequentes utilizam os dados previamente carregados dos arquivos CSV, em vez de realizar consultas ao site da Embrapa.
+Além disso, existe um endpoint especial na API: /vitibrasil/carrega_csv. Quando chamado, ele carrega todos os dados contidos nos arquivos CSV diretamente na memória da aplicação. Após essa operação, todas as requisições subsequentes utilizarão os dados previamente carregados dos arquivos CSV, em vez de realizar consultas ao site da Embrapa (web scraping).
 
-Também é possível limpar o cache da API: /vitibrasil/limpa_cache.  Com o cache limpo, as futuras consultas voltarão a realizar o web scrapping novamente.
+Também é possível limpar o cache da API: /vitibrasil/limpa_cache.  Com o cache limpo, as futuras consultas voltarão a realizar o web scrapping no site da Embrapa.
 
 ### Endpoints
 1. **Autenticação**
@@ -65,21 +65,31 @@ As principais dependências incluem:
 
 1. Clone o repositório:
    ```bash
-   git clone <URL_DO_REPOSITORIO>
-   cd <PASTA_DO_REPOSITORIO>
+   git clone https://github.com/fabiomatos71/fiap_4MLET_grupo56
+   cd fiap_4MLET_grupo56
    ```
-
-2. Instale as dependências:
+2. Abra a pasta/projeto fiap_lib_grupo56 (biblioteca/fiap_lib_grupo56) no vs code e instale as dependências
    ```bash
    pip install -r requirements.txt
    ```
+3. (instruções do arquivo anotacoes.txt)
+- > Atualizar versão do pacote em setup.py (version='0.1.xx')
+   ```bash
+   python setup.py sdist bdist_wheel (gera o dist para ser publicado)
+   twine upload dist/* (publica o pacote em pypi.org.  Requer conta no site pypi.org)
+   ```
+4. Abra a pasta/projeto api_grupo56 (api_grupo56) no vs code e instale as dependências
+   ```bash
+   (atualize a entrada fiap_lib_grupo56==0.1.13 de requirements.txt com a versão mais recente de fiap_lib_grupo56)
 
-3. Execute a API:
+   pip install -r requirements.txt
+   ```
+5. Execute a API:
    ```bash
    python app.py
    ```
 
-4. Acesse a documentação em:
+6. Acesse a documentação em:
    ```
    http://localhost:5000/swagger/
    ```
@@ -87,34 +97,36 @@ As principais dependências incluem:
 ## Estrutura de Arquivos
 
 ```
-.
-├── api_grupo56/                   # PASTA RAIZ DO PROJETO DA API. (abrir esta pasta no VS)
-│   ├── .venv                      # python
-│   ├── app.py                     # Código principal da API
-│   └── requirements.txt           # Dependências do projeto
+(fiap_4MLET_grupo56)                    # pasta raiz do repositório no github
+├── api_grupo56/                        # PASTA RAIZ DO PROJETO DA API. (abrir esta pasta no VS)
+│   ├── .venv                           # python
+│   ├── app.py                          # Código principal da API
+│   └── requirements.txt                # Dependências do projeto
 ├── biblioteca/                    
-│   ├── fiap_lib_grupo56/          # PASTA RAIZ DO PROJETO DA BIBLIOTECA (https://pypi.org/project/fiap-lib-grupo56/). (abrir esta pasta no VS)
-│   │   ├── .venv                  # python da biblioteca
-│   │   ├── modelo_dados/          # Classes para tratamento de dados
-│   │   │   ├── __init__.py        # Arquivo de inicialização do pacote
-│   │   │   └── ...(*.py)          # Classes do modelo de dados
+│   ├── fiap_lib_grupo56/               # PASTA RAIZ DO PROJETO DA BIBLIOTECA (https://pypi.org/project/fiap-lib-grupo56/). (abrir esta pasta no VS)
+│   │   ├── .venv                       # python da biblioteca
+│   │   ├── modelo_dados/               # Classes para tratamento de dados
+│   │   │   ├── __init__.py             # Arquivo de inicialização do pacote
+│   │   │   └── ...(*.py)               # Classes do modelo de dados
 │   │   ├── site_embrapa/           
-│   │   │   ├── __init__.py        # Arquivo de inicialização do pacote
-│   │   │   ├── site_embrapa.py    # Classe central da lógica do servidor
-│   │   │   └── arquivos_csv/      # Arquivos CSV com dados de backup
-│   │   │       └── ...(*.CSV)     # Arquivos CSV para fallback
-│   │   ├── anotacoes.txt          # Orientações de como publicar fiap_lib_grupo56 no pypi.org
-│   │   ├── MANIFEST.in            # Manifesto para inclusão dos arquivos .CSV no pacote
-│   │   ├── setup.py               # Configuração do fiap_lib_grupo56 para o pypi.org
-│   │   └── requirements.txt       # Dependências do projeto
+│   │   │   ├── __init__.py             # Arquivo de inicialização do pacote
+│   │   │   ├── site_embrapa.py         # Classe central da lógica do servidor
+│   │   │   └── arquivos_csv/           # Arquivos CSV com dados de backup
+│   │   │       └── ...(*.CSV)          # Arquivos CSV para fallback
+│   │   ├── anotacoes.txt               # Orientações de como publicar fiap_lib_grupo56 no pypi.org
+│   │   ├── MANIFEST.in                 # Manifesto para inclusão dos arquivos .CSV no pacote
+│   │   ├── LICENSE                     
+│   │   ├── setup.py                    # Configuração do fiap_lib_grupo56 para o pypi.org
+│   │   └── requirements.txt            # Dependências do projeto
 │   └── ...
-└── README.md                      # Descrição do projeto no github.  Este arquivo.
+├── Diagrama_TechChallenge_grupo56.png  # Diagrama de estrutura e macro funcionamento da API
+└── README.md                           # Descrição do projeto no github.  Este arquivo.
 ```
 
 ## Observações
 
-- **Segurança**: Certifique-se de alterar a chave secreta de autenticação (`JWT_SECRET_KEY`) antes de usar em produção.
-- **Teste**: Use as credenciais `username: 4MLET` e `password: 4MLET` para autenticação nos testes.
+- **Segurança**: Certifique-se de alterar a chave secreta de autenticação (`JWT_SECRET_KEY`) antes de usar em produção (app.py de api_grupo56)
+- **Teste**: Use as credenciais `username: 4MLET` e `password: 4MLET` para autenticação nos testes. (usar /login no swagger para gerar o token JWT)
 
 ## Autor
 - **Nome**: Fábio Vargas Matos
