@@ -24,6 +24,24 @@ class SiteEmbrapa:
         self.inicializa_repositorios()
 
     def inicializa_repositorios(self):
+        import os
+
+        print(f"os.getcwd():{os.getcwd()}")
+        print("---------------- conteudo da pasta corrente ------------")
+        print(f"os.listdir():{os.listdir()}")
+        print("---------------- fim conteudo da pasta corrente ------------")
+        try:
+            with as_file(files("site_embrapa.arquivos_csv").joinpath("producao.csv")) as caminho_csv:
+                print(f"caminho_csv:{caminho_csv}")
+                with open(caminho_csv, mode='r', encoding='utf-8') as file:
+                    content = file.read() 
+                    print(content)
+        except FileNotFoundError: 
+            print("File not found. Check the file path and filename.") 
+        except PermissionError: print("Permission denied. Check file permissions.")
+
+
+
         self.repositorio_categorias_prod = RepositorioCategorias_prod()
         self.repositorio_produtos_prod = RepositorioProdutos_prod()
         self.repositorio_produtividades = RepositorioProdutividadesAnuais()
