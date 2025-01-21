@@ -1,0 +1,8 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+src/fiap_lib_grupo56.egg-info/PKG-INFO
+src/fiap_lib_grupo56.egg-info/SOURCES.txt
+src/fiap_lib_grupo56.egg-info/dependency_links.txt
+src/fiap_lib_grupo56.egg-info/top_level.txt
