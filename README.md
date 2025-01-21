@@ -35,6 +35,10 @@ Além disso, existe um endpoint especial na API: /vitibrasil/carrega_csv. Quando
 
 Também é possível limpar o cache da API: /vitibrasil/limpa_cache.  Com o cache limpo, as futuras consultas voltarão a realizar o web scrapping no site da Embrapa.
 
+### link da publicação no Vercel - em "produção"
+
+- Acesse pelo link: https://fiap-4mlet-grupo56.vercel.app/ 
+
 ### Endpoints
 1. **Autenticação**
    - Gera um token JWT para autenticação das demais chamadas.  Todas as chamadas necessitam do token JWT.

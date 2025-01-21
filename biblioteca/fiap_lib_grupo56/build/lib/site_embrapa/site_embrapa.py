@@ -14,13 +14,13 @@ from modelo_dados.importacaoExportacao import RepositorioPaises, RepositorioImpo
 
 class SiteEmbrapa:
     """
-    Possui os métodos necessários para se fazer o webscrapping dos dados do site.
+    Possui os métodos necessários para se fazer o webscraping dos dados do site.
     Também gerencia um tipo de cache dos dados para quando o site estiver fora do ar.
     
     """
     def __init__(self):
         # locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-        self.webscrapping = WebscrappingSiteEmbrapa("http://vitibrasil.cnpuv.embrapa.br/index.php")
+        self.webscraping = WebscrapingSiteEmbrapa("http://vitibrasil.cnpuv.embrapa.br/index.php")
         self.inicializa_repositorios()
 
     def inicializa_repositorios(self):
@@ -269,7 +269,7 @@ class SiteEmbrapa:
         produtividadesEmCache = self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
         if len(produtividadesEmCache) == 0:
             try:
-                produtividadesEmCache = self.carregaRepoProdutividadePorAnoFromWebscrapping(ano)
+                produtividadesEmCache = self.carregaRepoProdutividadePorAnoFromWebscraping(ano)
             except Exception as erro:
                 self.carregaRepositoriosFromArquivosCSV()
                 produtividadesEmCache = self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
@@ -285,7 +285,7 @@ class SiteEmbrapa:
         produtividadesEmCache = self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
         if len(produtividadesEmCache) == 0:
             try:
-                produtividadesEmCache = self.carregaRepoProdutividadePorAnoFromWebscrapping(ano)
+                produtividadesEmCache = self.carregaRepoProdutividadePorAnoFromWebscraping(ano)
             except Exception as erro:
                 self.carregaRepositoriosFromArquivosCSV()
                 produtividadesEmCache = self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
@@ -306,7 +306,7 @@ class SiteEmbrapa:
         processamentoEmCache = self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
         if len(processamentoEmCache) == 0:
             try:
-                processamentoEmCache = self.carregaRepoProcessamentoPorAnoTipoUvaFromWebscrapping(ano, tipo_uva)
+                processamentoEmCache = self.carregaRepoProcessamentoPorAnoTipoUvaFromWebscraping(ano, tipo_uva)
             except Exception as erro:
                 self.carregaRepositoriosFromArquivosCSV()
                 processamentoEmCache = self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
@@ -322,7 +322,7 @@ class SiteEmbrapa:
         processamentoEmCache = self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
         if len(processamentoEmCache) == 0:
             try:
-                processamentoEmCache = self.carregaRepoProcessamentoPorAnoTipoUvaFromWebscrapping(ano, tipo_uva)
+                processamentoEmCache = self.carregaRepoProcessamentoPorAnoTipoUvaFromWebscraping(ano, tipo_uva)
             except Exception as erro:
                 self.carregaRepositoriosFromArquivosCSV()
                 processamentoEmCache = self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
@@ -344,7 +344,7 @@ class SiteEmbrapa:
         comercializacoesEmCache = self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
         if len(comercializacoesEmCache) == 0:
             try:
-                comercializacoesEmCache = self.carregaRepoComercializacaoPorAnoFromWebscrapping(ano)
+                comercializacoesEmCache = self.carregaRepoComercializacaoPorAnoFromWebscraping(ano)
             except Exception as erro:
                 self.carregaRepositoriosFromArquivosCSV()
                 comercializacoesEmCache = self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
@@ -360,7 +360,7 @@ class SiteEmbrapa:
         comercializacoesEmCache = self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
         if len(comercializacoesEmCache) == 0:
             try:
-                comercializacoesEmCache = self.carregaRepoComercializacaoPorAnoFromWebscrapping(ano)
+                comercializacoesEmCache = self.carregaRepoComercializacaoPorAnoFromWebscraping(ano)
             except Exception as erro:
                 self.carregaRepositoriosFromArquivosCSV()
                 comercializacoesEmCache = self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
@@ -379,7 +379,7 @@ class SiteEmbrapa:
         importacaoEmCache = self.repositorio_importacoes.buscar_importacoesPorAnoCategoria(ano, categoria)
         if len(importacaoEmCache) == 0:
             try:
-                importacaoEmCache = self.carregaRepoImportacaoPorAnoCategoriaFromWebscrapping(ano, categoria)
+                importacaoEmCache = self.carregaRepoImportacaoPorAnoCategoriaFromWebscraping(ano, categoria)
             except Exception as erro:
                 self.carregaRepositoriosFromArquivosCSV()
                 importacaoEmCache = self.repositorio_importacoes.buscar_importacoesPorAnoCategoria(ano, categoria)
@@ -397,7 +397,7 @@ class SiteEmbrapa:
         exportacaoEmCache = self.repositorio_exportacoes.buscar_exportacoesPorAnoCategoria(ano, categoria)
         if len(exportacaoEmCache) == 0:
             try:
-                exportacaoEmCache = self.carregaRepoExportacaoPorAnoCategoriaFromWebscrapping(ano, categoria)
+                exportacaoEmCache = self.carregaRepoExportacaoPorAnoCategoriaFromWebscraping(ano, categoria)
             except Exception as erro:
                 self.carregaRepositoriosFromArquivosCSV()
                 exportacaoEmCache = self.repositorio_exportacoes.buscar_exportacoesPorAnoCategoria(ano, categoria)
@@ -405,15 +405,15 @@ class SiteEmbrapa:
                 return exportacaoEmCache
         return exportacaoEmCache
 
-    def carregaRepoProdutividadePorAnoFromWebscrapping(self, ano: int) -> List[ProdutividadeAnual]:
-        rows = self.webscrapping.obterProducaoPorAno(ano)
+    def carregaRepoProdutividadePorAnoFromWebscraping(self, ano: int) -> List[ProdutividadeAnual]:
+        rows = self.webscraping.obterProducaoPorAno(ano)
 
         categoriaAtual: Categoria_prod = None
         produtoAtual: Produto_prod = None
         produtividadeAnualAtual: ProdutividadeAnual = None
 
         """
-            Carrega self.repositorio_produtos_prod, self.repositorio_categorias_prod e self.repositorio_produtividades com os elementos vindos do webscrapping
+            Carrega self.repositorio_produtos_prod, self.repositorio_categorias_prod e self.repositorio_produtividades com os elementos vindos do webscraping
         """
         for row in rows:
             # Encontra todas as células da linha
@@ -437,15 +437,15 @@ class SiteEmbrapa:
                     self.repositorio_produtividades.adicionar_produtividade(produtividadeAnualAtual)
         return self.repositorio_produtividades.buscar_produtividadesPorAno(ano)
 
-    def carregaRepoProcessamentoPorAnoTipoUvaFromWebscrapping(self, ano: int, tipo_uva: EnumTipoUva_proc) -> List[ProcessamentoAnual]:
-        rows = self.webscrapping.obterProcessamentoPorAno_TipoUva(ano, tipo_uva)
+    def carregaRepoProcessamentoPorAnoTipoUvaFromWebscraping(self, ano: int, tipo_uva: EnumTipoUva_proc) -> List[ProcessamentoAnual]:
+        rows = self.webscraping.obterProcessamentoPorAno_TipoUva(ano, tipo_uva)
 
         categoriaAtual: Categoria_proc = None
         cultivarAtual: Cultivar_proc = None
         processamentoAnualAtual: ProcessamentoAnual = None
 
         """
-            Carrega self.repositorio_produtos_proc, self.repositorio_categorias_proc e self.repositorio_processamentos com os elementos vindos do webscrapping
+            Carrega self.repositorio_produtos_proc, self.repositorio_categorias_proc e self.repositorio_processamentos com os elementos vindos do webscraping
         """
         for row in rows:
             cells = row.find_all("td")
@@ -478,8 +478,8 @@ class SiteEmbrapa:
                     self.repositorio_processamentos.adicionar_processamento(processamentoAnualAtual)
         return self.repositorio_processamentos.buscar_processamentosPorAno_TipoUva(ano, tipo_uva)
 
-    def carregaRepoComercializacaoPorAnoFromWebscrapping(self, ano: int) -> List[ProdutividadeAnual]:
-        rows = self.webscrapping.obterComercializacaoPorAno(ano)
+    def carregaRepoComercializacaoPorAnoFromWebscraping(self, ano: int) -> List[ProdutividadeAnual]:
+        rows = self.webscraping.obterComercializacaoPorAno(ano)
 
         categoriaAtual: Categoria_prod = None
         produtoAtual: Produto_prod = None
@@ -487,7 +487,7 @@ class SiteEmbrapa:
         ultima_tag_foi_categoria: bool = False
 
         """
-            Carrega self.repositorio_produtos_com, self.repositorio_categorias_com e self.repositorio_comercializacoes com os elementos vindos do webscrapping
+            Carrega self.repositorio_produtos_com, self.repositorio_categorias_com e self.repositorio_comercializacoes com os elementos vindos do webscraping
         """
         for row in rows:
             cells = row.find_all("td")
@@ -523,14 +523,14 @@ class SiteEmbrapa:
                     ultima_tag_foi_categoria = False
         return self.repositorio_comercializacoes.buscar_comercializacoesPorAno(ano)
 
-    def carregaRepoImportacaoPorAnoCategoriaFromWebscrapping(self, ano: int, categoria: EnumCategoria_im_ex) -> List[ImportacaoAnual]:
-        rows = self.webscrapping.obterImportacaoPorAno_categoria(ano, categoria)
+    def carregaRepoImportacaoPorAnoCategoriaFromWebscraping(self, ano: int, categoria: EnumCategoria_im_ex) -> List[ImportacaoAnual]:
+        rows = self.webscraping.obterImportacaoPorAno_categoria(ano, categoria)
 
         paisAtual: Pais = None
         importacaoAnualAtual: ImportacaoAnual = None
 
         """
-            Carrega self.repositorio_importacoes, self.repositorio_categorias_im_ex e self.repositorio_paises com os elementos vindos do webscrapping
+            Carrega self.repositorio_importacoes, self.repositorio_categorias_im_ex e self.repositorio_paises com os elementos vindos do webscraping
         """
         for row in rows:
             cells = row.find_all("td")
@@ -546,14 +546,14 @@ class SiteEmbrapa:
                 self.repositorio_importacoes.adicionar_importacao(importacaoAnualAtual)
         return self.repositorio_importacoes.buscar_importacoesPorAnoCategoria(ano, categoria)
 
-    def carregaRepoExportacaoPorAnoCategoriaFromWebscrapping(self, ano: int, categoria: EnumCategoria_im_ex) -> List[ExportacaoAnual]:
-        rows = self.webscrapping.obterExportacaoPorAno_categoria(ano, categoria)
+    def carregaRepoExportacaoPorAnoCategoriaFromWebscraping(self, ano: int, categoria: EnumCategoria_im_ex) -> List[ExportacaoAnual]:
+        rows = self.webscraping.obterExportacaoPorAno_categoria(ano, categoria)
 
         paisAtual: Pais = None
         exportacaoAnualAtual: ExportacaoAnual = None
 
         """
-            Carrega self.repositorio_importacoes, self.repositorio_categorias_im_ex e self.repositorio_paises com os elementos vindos do webscrapping
+            Carrega self.repositorio_importacoes, self.repositorio_categorias_im_ex e self.repositorio_paises com os elementos vindos do webscraping
         """
         for row in rows:
             cells = row.find_all("td")
@@ -569,9 +569,9 @@ class SiteEmbrapa:
                 self.repositorio_exportacoes.adicionar_exportacao(exportacaoAnualAtual)
         return self.repositorio_exportacoes.buscar_exportacoesPorAnoCategoria(ano, categoria)
 
-class WebscrappingSiteEmbrapa:
+class WebscrapingSiteEmbrapa:
     """
-    Realiza o webscrapping na página especifica do site, de acordo com o método utilizado. (Producao, Processamento etc...)
+    Realiza o webscraping na página especifica do site, de acordo com o método utilizado. (Producao, Processamento etc...)
 
     """
     def __init__(self, urlBase: str):
@@ -579,7 +579,7 @@ class WebscrappingSiteEmbrapa:
 
     def obterProducaoPorAno(self, ano: int) -> list:
         """
-        Realiza o Webscrapping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
+        Realiza o Webscraping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
 
         """
         url = f"{self.UrlBase}?ano={ano}&opcao=opt_02"
@@ -591,7 +591,7 @@ class WebscrappingSiteEmbrapa:
 
     def obterProcessamentoPorAno_TipoUva(self, ano: int, tipo_uva: EnumTipoUva_proc) -> list:
         """
-        Realiza o Webscrapping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
+        Realiza o Webscraping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
 
         """
         if tipo_uva == EnumTipoUva_proc.VINIFERAS:
@@ -614,7 +614,7 @@ class WebscrappingSiteEmbrapa:
 
     def obterComercializacaoPorAno(self, ano: int) -> list:
         """
-        Realiza o Webscrapping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
+        Realiza o Webscraping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
 
         """
         url = f"{self.UrlBase}?ano={ano}&opcao=opt_04" 
@@ -626,7 +626,7 @@ class WebscrappingSiteEmbrapa:
 
     def obterImportacaoPorAno_categoria(self, ano: int, categoria: EnumCategoria_im_ex) -> list:
         """
-        Realiza o Webscrapping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
+        Realiza o Webscraping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
 
         """
         if categoria == EnumCategoria_im_ex.VINHOSDEMESA:
@@ -651,7 +651,7 @@ class WebscrappingSiteEmbrapa:
 
     def obterExportacaoPorAno_categoria(self, ano: int, categoria: EnumCategoria_im_ex) -> list:
         """
-        Realiza o Webscrapping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
+        Realiza o Webscraping no site da embrapa.  Retornalista de elementos das tags_tr_do_tbody.
 
         """
         if categoria == EnumCategoria_im_ex.VINHOSDEMESA:
