@@ -46,7 +46,7 @@ As principais dependências incluem:
 
 ### Preparação de uma versão da biblioteca
 
-1. Atualizar a versão no setup.py, pois o PyPi.org não aceita repetições de numero de versão:
+1. Atualizar a versão no setup.py, pois o PyPi.org não aceita repetições de numero de versão (version='0.3.3',):
    ```bash
    from setuptools import setup, find_packages
 
@@ -116,7 +116,7 @@ As principais dependências incluem:
 ```
 
 ## Autor
-- **Nome**: Fábio Vargas Matos
+- **Nome**: Fábio Vargas Matos - Grupo 56 - 4MLET
 - **Contato**: [fabiomatos@baneses.com.br](mailto:fabiomatos@baneses.com.br)
 
 ## Licença
