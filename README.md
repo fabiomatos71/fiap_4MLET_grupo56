@@ -61,6 +61,7 @@ As principais dependências incluem:
 - Flask-JWT-Extended - JWT
 - Flasgger - Swagger
 - bs4 (BeautifulSoup) - web scraping
+- fiap_lib_grupo56
 
 
 ## Estrutura de Arquivos

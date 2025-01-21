@@ -9,6 +9,14 @@ Site utilizado: http://vitibrasil.cnpuv.embrapa.br/
 
 ## Biblioteca fiap_lib_grupo56
 
+### link do módulo criado e publicado no pypi.org
+
+https://pypi.org/project/fiap-lib-grupo56/
+
+```bash
+   pip install fiap_lib_grupo56
+```
+
 ### Componentes
 A lógica do servidor está organizada em:
 - **Classe SiteEmbrapa**: Centraliza a lógica de negócios e orquestra o acesso a dados.
