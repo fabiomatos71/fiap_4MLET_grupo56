@@ -24,29 +24,29 @@ class SiteEmbrapa:
         self.inicializa_repositorios()
 
     def inicializa_repositorios(self):
-        import os
-        import site_embrapa.vercel_log as vl
+        # import os
+        # import site_embrapa.vercel_log as vl
 
-        # Setup logging
-        logger = vl.VerceLLogger()
+        # # Setup logging
+        # logger = vl.VerceLLogger()
 
-        # Log application start
-        logger.info('Inicio aplicacao')
+        # # Log application start
+        # logger.info('Inicio aplicacao')
 
-        logger.info(f"os.getcwd():{os.getcwd()}")
-        logger.info("---------------- conteudo da pasta corrente ------------")
-        logger.info(f"os.listdir('/var/task/site_embrapa'):{os.listdir(path='/var/task/site_embrapa/arquivos_csv')}")
-        logger.info("---------------- fim conteudo da pasta corrente ------------")
-        try:
-            with as_file(files("site_embrapa.arquivos_csv").joinpath("Producao.csv")) as caminho_csv:
-                logger.info(f"XXXX - caminho_csv:{caminho_csv}")
-                with open(caminho_csv, mode='r', encoding='utf-8') as file:
-                    content = file.read() 
-                    logger.info(f"XXXX - conteudo tamanho:{len(content)}")
-        except FileNotFoundError: 
-            logger.info("XXXX - File not found. Check the file path and filename.") 
-        except PermissionError: 
-            logger.info("XXXX - Permission denied. Check file permissions.")
+        # logger.info(f"os.getcwd():{os.getcwd()}")
+        # logger.info("---------------- conteudo da pasta corrente ------------")
+        # logger.info(f"os.listdir('/var/task/site_embrapa'):{os.listdir(path='/var/task/site_embrapa/arquivos_csv')}")
+        # logger.info("---------------- fim conteudo da pasta corrente ------------")
+        # try:
+        #     with as_file(files("site_embrapa.arquivos_csv").joinpath("Producao.csv")) as caminho_csv:
+        #         logger.info(f"XXXX - caminho_csv:{caminho_csv}")
+        #         with open(caminho_csv, mode='r', encoding='utf-8') as file:
+        #             content = file.read() 
+        #             logger.info(f"XXXX - conteudo tamanho:{len(content)}")
+        # except FileNotFoundError: 
+        #     logger.info("XXXX - File not found. Check the file path and filename.") 
+        # except PermissionError: 
+        #     logger.info("XXXX - Permission denied. Check file permissions.")
 
 
 
@@ -77,127 +77,125 @@ class SiteEmbrapa:
         self.repositorio_categorias_proc = RepositorioCategorias_proc()
         self.repositorio_cultivares_proc = RepositorioCultivar_proc()
         self.repositorio_processamentos = RepositorioProcessamentosAnuais()
-        self.carregaRepoProcessamentoFromArquivoCSV("ProcessaViniferas.csv", EnumTipoUva_proc.VINIFERAS, ";")
-        self.carregaRepoProcessamentoFromArquivoCSV("ProcessaAmericanas.csv", EnumTipoUva_proc.AMERICANASEHIBRIDAS, "\t")
-        self.carregaRepoProcessamentoFromArquivoCSV("ProcessaMesa.csv", EnumTipoUva_proc.UVASDEMESA, "\t")
-        self.carregaRepoProcessamentoFromArquivoCSV("ProcessaSemclass.csv", EnumTipoUva_proc.SEMCLASSIFICACAO, "\t")
+        self.carregaRepoProcessamentoFromArquivoCSV("processaviniferas.csv", EnumTipoUva_proc.VINIFERAS, ";")
+        self.carregaRepoProcessamentoFromArquivoCSV("processaamericanas.csv", EnumTipoUva_proc.AMERICANASEHIBRIDAS, "\t")
+        self.carregaRepoProcessamentoFromArquivoCSV("processamesa.csv", EnumTipoUva_proc.UVASDEMESA, "\t")
+        self.carregaRepoProcessamentoFromArquivoCSV("processasemclass.csv", EnumTipoUva_proc.SEMCLASSIFICACAO, "\t")
 
     def carregaRepoTodasImportacoesFromArquivoCSV(self):
         self.repositorio_importacoes = RepositorioImportacoesAnuais()
-        self.carregaRepoImportacaoFromArquivoCSV("ImpVinhos.csv", EnumCategoria_im_ex.VINHOSDEMESA, ";")
-        self.carregaRepoImportacaoFromArquivoCSV("ImpEspumantes.csv", EnumCategoria_im_ex.ESPUMANTES, ";")
-        self.carregaRepoImportacaoFromArquivoCSV("ImpFrescas.csv", EnumCategoria_im_ex.UVASFRESCAS, ";")
-        self.carregaRepoImportacaoFromArquivoCSV("ImpPassas.csv", EnumCategoria_im_ex.UVASPASSAS, ";")
-        self.carregaRepoImportacaoFromArquivoCSV("ImpSuco.csv", EnumCategoria_im_ex.SUCODEUVA, ";")
+        self.carregaRepoImportacaoFromArquivoCSV("impvinhos.csv", EnumCategoria_im_ex.VINHOSDEMESA, ";")
+        self.carregaRepoImportacaoFromArquivoCSV("impespumantes.csv", EnumCategoria_im_ex.ESPUMANTES, ";")
+        self.carregaRepoImportacaoFromArquivoCSV("impfrescas.csv", EnumCategoria_im_ex.UVASFRESCAS, ";")
+        self.carregaRepoImportacaoFromArquivoCSV("imppassas.csv", EnumCategoria_im_ex.UVASPASSAS, ";")
+        self.carregaRepoImportacaoFromArquivoCSV("impsuco.csv", EnumCategoria_im_ex.SUCODEUVA, ";")
 
     def carregaRepoTodasExportacoesFromArquivoCSV(self):
         self.repositorio_exportacoes = RepositorioExportacoesAnuais()
-        self.carregaRepoExportacaoFromArquivoCSV("ExpVinho.csv", EnumCategoria_im_ex.VINHOSDEMESA, ";")
-        self.carregaRepoExportacaoFromArquivoCSV("ExpEspumantes.csv", EnumCategoria_im_ex.ESPUMANTES, ";")
-        self.carregaRepoExportacaoFromArquivoCSV("ExpUva.csv", EnumCategoria_im_ex.UVASFRESCAS, ";")
-        self.carregaRepoExportacaoFromArquivoCSV("ExpSuco.csv", EnumCategoria_im_ex.SUCODEUVA, ";")
+        self.carregaRepoExportacaoFromArquivoCSV("expvinho.csv", EnumCategoria_im_ex.VINHOSDEMESA, ";")
+        self.carregaRepoExportacaoFromArquivoCSV("expespumantes.csv", EnumCategoria_im_ex.ESPUMANTES, ";")
+        self.carregaRepoExportacaoFromArquivoCSV("expuva.csv", EnumCategoria_im_ex.UVASFRESCAS, ";")
+        self.carregaRepoExportacaoFromArquivoCSV("expsuco.csv", EnumCategoria_im_ex.SUCODEUVA, ";")
 
 
     def carregaRepoExportacaoFromArquivoCSV(self, arquivo_csv: str, categoria: EnumCategoria_im_ex, delimitador_arquivo: str):
-        caminho_csv = files("site_embrapa.arquivos_csv").joinpath(arquivo_csv)
-        with open(caminho_csv, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file, delimiter = delimitador_arquivo)
-            
-            # Itera sobre cada linha do arquivo CSV
-            for linha in reader:
-                nome_pais = linha.get("País")
+        with as_file(files("site_embrapa.arquivos_csv").joinpath(arquivo_csv)) as caminho_csv:
+            with open(caminho_csv, mode='r', encoding='utf-8') as file:
+                reader = csv.DictReader(file, delimiter = delimitador_arquivo)
+                
+                # Itera sobre cada linha do arquivo CSV
+                for linha in reader:
+                    nome_pais = linha.get("País")
 
-                if not nome_pais:
-                    continue  # Pula linhas com dados incompletos
+                    if not nome_pais:
+                        continue  # Pula linhas com dados incompletos
 
-                pais = self.repositorio_paises.buscar_pais_por_nome(nome_pais)
-                if not pais:
-                    pais = Pais(nome_pais)
-                    self.repositorio_paises.adicionar_pais(pais)
-                col_quantidade = 0
-                col_valor = 0
-                for coluna, valor in linha.items():
-                    if coluna[:4].isdigit():  
-                        ano = int(coluna[:4])
-                        if coluna[4] == 'a':
-                            col_quantidade = valor
-                        elif coluna[4] == 'b':
-                            col_valor = valor
-                            exportacao = ExportacaoAnual(ano, col_valor, col_quantidade, categoria, pais)
-                            self.repositorio_exportacoes.adicionar_exportacao(exportacao)
+                    pais = self.repositorio_paises.buscar_pais_por_nome(nome_pais)
+                    if not pais:
+                        pais = Pais(nome_pais)
+                        self.repositorio_paises.adicionar_pais(pais)
+                    col_quantidade = 0
+                    col_valor = 0
+                    for coluna, valor in linha.items():
+                        if coluna[:4].isdigit():  
+                            ano = int(coluna[:4])
+                            if coluna[4] == 'a':
+                                col_quantidade = valor
+                            elif coluna[4] == 'b':
+                                col_valor = valor
+                                exportacao = ExportacaoAnual(ano, col_valor, col_quantidade, categoria, pais)
+                                self.repositorio_exportacoes.adicionar_exportacao(exportacao)
 
     def carregaRepoImportacaoFromArquivoCSV(self, arquivo_csv: str, categoria: EnumCategoria_im_ex, delimitador_arquivo: str):
-        caminho_csv = files("site_embrapa.arquivos_csv").joinpath(arquivo_csv)
-        with open(caminho_csv, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file, delimiter = delimitador_arquivo)
-            
-            # Itera sobre cada linha do arquivo CSV
-            for linha in reader:
-                nome_pais = linha.get("País")
+        with as_file(files("site_embrapa.arquivos_csv").joinpath(arquivo_csv)) as caminho_csv:
+            with open(caminho_csv, mode='r', encoding='utf-8') as file:
+                reader = csv.DictReader(file, delimiter = delimitador_arquivo)
+                
+                # Itera sobre cada linha do arquivo CSV
+                for linha in reader:
+                    nome_pais = linha.get("País")
 
-                if not nome_pais:
-                    continue  # Pula linhas com dados incompletos
+                    if not nome_pais:
+                        continue  # Pula linhas com dados incompletos
 
-                pais = self.repositorio_paises.buscar_pais_por_nome(nome_pais)
-                if not pais:
-                    pais = Pais(nome_pais)
-                    self.repositorio_paises.adicionar_pais(pais)
-                col_quantidade = 0
-                col_valor = 0
-                for coluna, valor in linha.items():
-                    if coluna[:4].isdigit():  
-                        ano = int(coluna[:4])
-                        if coluna[4] == 'a':
-                            col_quantidade = valor
-                        elif coluna[4] == 'b':
-                            col_valor = valor
-                            importacao = ImportacaoAnual(ano, col_valor, col_quantidade, categoria, pais)
-                            self.repositorio_importacoes.adicionar_importacao(importacao)
+                    pais = self.repositorio_paises.buscar_pais_por_nome(nome_pais)
+                    if not pais:
+                        pais = Pais(nome_pais)
+                        self.repositorio_paises.adicionar_pais(pais)
+                    col_quantidade = 0
+                    col_valor = 0
+                    for coluna, valor in linha.items():
+                        if coluna[:4].isdigit():  
+                            ano = int(coluna[:4])
+                            if coluna[4] == 'a':
+                                col_quantidade = valor
+                            elif coluna[4] == 'b':
+                                col_valor = valor
+                                importacao = ImportacaoAnual(ano, col_valor, col_quantidade, categoria, pais)
+                                self.repositorio_importacoes.adicionar_importacao(importacao)
 
 
     def carregaRepoProcessamentoFromArquivoCSV(self, arquivo_csv: str, tipo_uva: EnumTipoUva_proc, delimitador_arquivo: str):
-        caminho_csv = files("site_embrapa.arquivos_csv").joinpath(arquivo_csv)
         categoria_atual = None
-        with open(caminho_csv, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file, delimiter = delimitador_arquivo)
-            
-            # Itera sobre cada linha do arquivo CSV
-            for linha in reader:
-                nome_categoria = linha.get("control")
-                nome_cultivar = linha.get("cultivar")
-
-                if not nome_categoria or not nome_cultivar:
-                    continue  # Pula linhas com dados incompletos
+        with as_file(files("site_embrapa.arquivos_csv").joinpath(arquivo_csv)) as caminho_csv:
+            with open(caminho_csv, mode='r', encoding='utf-8') as file:
+                reader = csv.DictReader(file, delimiter = delimitador_arquivo)
                 
-                if nome_categoria == nome_cultivar:
-                    # Verifica se a categoria já existe no repositório
-                    categoria_atual = self.repositorio_categorias_proc.buscar_categoria_por_nome(nome_categoria)
-                    if not categoria_atual:
-                        categoria_atual = Categoria_proc(nome_categoria)
-                        self.repositorio_categorias_proc.adicionar_categoria(categoria_atual)
-                else:
-                    if nome_cultivar == "Sem classificação":
-                        categoria_atual = self.repositorio_categorias_proc.buscar_categoria_por_nome(nome_cultivar)
-                        if not categoria_atual:
-                            categoria_atual = Categoria_proc(nome_cultivar)
-                            self.repositorio_categorias_proc.adicionar_categoria(categoria_atual)
-                    # Verifica se o cultivar já existe no repositório
-                    cultivar = self.repositorio_cultivares_proc.buscar_cultivar_por_nome_categoria_tipo(nome_cultivar, categoria_atual, tipo_uva)
-                    if not cultivar:
-                        cultivar = Cultivar_proc(nome_cultivar, categoria_atual, tipo_uva)
-                        self.repositorio_cultivares_proc.adicionar_cultivar(cultivar)
+                # Itera sobre cada linha do arquivo CSV
+                for linha in reader:
+                    nome_categoria = linha.get("control")
+                    nome_cultivar = linha.get("cultivar")
+
+                    if not nome_categoria or not nome_cultivar:
+                        continue  # Pula linhas com dados incompletos
                     
-                    # Cria instâncias de ProdutividadeAnual para os anos disponíveis
-                    for coluna, valor in linha.items():
-                        if coluna.isdigit():  
-                            ano = int(coluna)
-                            processamento = ProcessamentoAnual(ano, valor, cultivar)
-                            self.repositorio_processamentos.adicionar_processamento(processamento)        
+                    if nome_categoria == nome_cultivar:
+                        # Verifica se a categoria já existe no repositório
+                        categoria_atual = self.repositorio_categorias_proc.buscar_categoria_por_nome(nome_categoria)
+                        if not categoria_atual:
+                            categoria_atual = Categoria_proc(nome_categoria)
+                            self.repositorio_categorias_proc.adicionar_categoria(categoria_atual)
+                    else:
+                        if nome_cultivar == "Sem classificação":
+                            categoria_atual = self.repositorio_categorias_proc.buscar_categoria_por_nome(nome_cultivar)
+                            if not categoria_atual:
+                                categoria_atual = Categoria_proc(nome_cultivar)
+                                self.repositorio_categorias_proc.adicionar_categoria(categoria_atual)
+                        # Verifica se o cultivar já existe no repositório
+                        cultivar = self.repositorio_cultivares_proc.buscar_cultivar_por_nome_categoria_tipo(nome_cultivar, categoria_atual, tipo_uva)
+                        if not cultivar:
+                            cultivar = Cultivar_proc(nome_cultivar, categoria_atual, tipo_uva)
+                            self.repositorio_cultivares_proc.adicionar_cultivar(cultivar)
+                        
+                        # Cria instâncias de ProdutividadeAnual para os anos disponíveis
+                        for coluna, valor in linha.items():
+                            if coluna.isdigit():  
+                                ano = int(coluna)
+                                processamento = ProcessamentoAnual(ano, valor, cultivar)
+                                self.repositorio_processamentos.adicionar_processamento(processamento)        
 
 
     def carregaRepoProdutividadeFromArquivoCSV(self):
-        # caminho_csv = "./arquivos_csv/producao.csv"
-        # caminho_csv = files("site_embrapa.arquivos_csv").joinpath("producao.csv")
         self.repositorio_categorias_prod = RepositorioCategorias_prod()
         self.repositorio_produtos_prod = RepositorioProdutos_prod()
         self.repositorio_produtividades = RepositorioProdutividadesAnuais()
@@ -235,58 +233,57 @@ class SiteEmbrapa:
                                 self.repositorio_produtividades.adicionar_produtividade(produtividade)
 
     def carregaRepoComercializacaoFromArquivoCSV(self):
-        # caminho_csv = "./arquivos_csv/comercio.csv"
-        caminho_csv = files("site_embrapa.arquivos_csv").joinpath("comercio.csv")
         self.repositorio_categorias_com = RepositorioCategorias_com()
         self.repositorio_produtos_com = RepositorioProdutos_com()
         self.repositorio_comercializacoes = RepositorioComercializacoesAnuais()
 
         categoria_atual = None
         ultima_linha_foi_categoria = False
-        with open(caminho_csv, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file, delimiter=';')
-            
-            # Itera sobre cada linha do arquivo CSV
-            for linha in reader:
-                nome_categoria = linha.get("control").lstrip().rstrip()
-                nome_produto = linha.get("Produto").lstrip().rstrip()
-
-                if not nome_categoria or not nome_produto:
-                    continue  # Pula linhas com dados incompletos
+        with as_file(files("site_embrapa.arquivos_csv").joinpath("comercio.csv")) as caminho_csv:
+            with open(caminho_csv, mode='r', encoding='utf-8') as file:
+                reader = csv.DictReader(file, delimiter=';')
                 
-                if nome_categoria == nome_produto:
-                    if ultima_linha_foi_categoria:
-                        produto = self.repositorio_produtos_com.buscar_produto_por_nome_categoria(categoria_atual.nome, categoria_atual)
+                # Itera sobre cada linha do arquivo CSV
+                for linha in reader:
+                    nome_categoria = linha.get("control").lstrip().rstrip()
+                    nome_produto = linha.get("Produto").lstrip().rstrip()
+
+                    if not nome_categoria or not nome_produto:
+                        continue  # Pula linhas com dados incompletos
+                    
+                    if nome_categoria == nome_produto:
+                        if ultima_linha_foi_categoria:
+                            produto = self.repositorio_produtos_com.buscar_produto_por_nome_categoria(categoria_atual.nome, categoria_atual)
+                            if not produto:
+                                produto = Produto_com(categoria_atual.nome, categoria_atual)
+                                self.repositorio_produtos_com.adicionar_produto(produto)
+                            # Cria instâncias de ProdutividadeAnual para os anos disponíveis
+                            for coluna, valor in linha_anterior.items():
+                                if coluna.isdigit():  
+                                    ano = int(coluna)
+                                    comercializacao = ComercializacaoAnual(ano, valor, produto)
+                                    self.repositorio_comercializacoes.adicionar_comercializacao(comercializacao)
+                        # Verifica se a categoria já existe no repositório
+                        categoria_atual = self.repositorio_categorias_com.buscar_categoria_por_nome(nome_categoria)
+                        if not categoria_atual:
+                            categoria_atual = Categoria_com(nome_categoria)
+                            self.repositorio_categorias_com.adicionar_categoria(categoria_atual)
+                        ultima_linha_foi_categoria = True
+                        linha_anterior = linha
+                    else:
+                        # Verifica se o produto já existe no repositório
+                        ultima_linha_foi_categoria = False
+                        produto = self.repositorio_produtos_com.buscar_produto_por_nome_categoria(nome_produto, categoria_atual)
                         if not produto:
-                            produto = Produto_com(categoria_atual.nome, categoria_atual)
+                            produto = Produto_com(nome_produto, categoria_atual)
                             self.repositorio_produtos_com.adicionar_produto(produto)
+                        
                         # Cria instâncias de ProdutividadeAnual para os anos disponíveis
-                        for coluna, valor in linha_anterior.items():
+                        for coluna, valor in linha.items():
                             if coluna.isdigit():  
                                 ano = int(coluna)
                                 comercializacao = ComercializacaoAnual(ano, valor, produto)
                                 self.repositorio_comercializacoes.adicionar_comercializacao(comercializacao)
-                    # Verifica se a categoria já existe no repositório
-                    categoria_atual = self.repositorio_categorias_com.buscar_categoria_por_nome(nome_categoria)
-                    if not categoria_atual:
-                        categoria_atual = Categoria_com(nome_categoria)
-                        self.repositorio_categorias_com.adicionar_categoria(categoria_atual)
-                    ultima_linha_foi_categoria = True
-                    linha_anterior = linha
-                else:
-                    # Verifica se o produto já existe no repositório
-                    ultima_linha_foi_categoria = False
-                    produto = self.repositorio_produtos_com.buscar_produto_por_nome_categoria(nome_produto, categoria_atual)
-                    if not produto:
-                        produto = Produto_com(nome_produto, categoria_atual)
-                        self.repositorio_produtos_com.adicionar_produto(produto)
-                    
-                    # Cria instâncias de ProdutividadeAnual para os anos disponíveis
-                    for coluna, valor in linha.items():
-                        if coluna.isdigit():  
-                            ano = int(coluna)
-                            comercializacao = ComercializacaoAnual(ano, valor, produto)
-                            self.repositorio_comercializacoes.adicionar_comercializacao(comercializacao)
 
     def obterProducoesPorAno(self, ano: int) -> List[ProdutividadeAnual]:
         """

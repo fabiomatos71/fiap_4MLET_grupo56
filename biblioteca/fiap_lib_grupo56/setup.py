@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
    name='fiap_lib_grupo56',
-   version='0.3.24',
+   version='0.3.25',
    package_dir={"" : "src"},
    packages=find_packages(
         where='src',
