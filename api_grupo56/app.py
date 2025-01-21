@@ -8,6 +8,7 @@ from site_embrapa import SiteEmbrapa
 from modelo_dados.processamento import EnumTipoUva_proc
 from modelo_dados.importacaoExportacao import EnumCategoria_im_ex
 
+
 app = Flask(__name__)
 # configuração para conversão correta de caracteres acentuados
 app.config['JSON_AS_ASCII'] = False
