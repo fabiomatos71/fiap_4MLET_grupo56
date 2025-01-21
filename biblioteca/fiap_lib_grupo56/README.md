@@ -23,7 +23,7 @@ A **fiap_lib_grupo56** foi desenvolvida para ser autônoma na terafa de obter, t
 
 Desta forma, apesar de não ser o objetivo para qual foi desenvolvida, a biblioteca pode ser utilizada para se obter os dados do site da Embrapa, de forma independente do uso da API.  A **classe SiteEmbrapa** é a porta de entrada da **fiap_lib_grupo56** e dá acesso a uma gama de métodos de consulta às informações da Embrapa.  Tudo encapsulado na biblioteca, inclusive os arquivos .CSV para fallback.  Até mesmo com o site da Embrapa fora do ar, a biblioteca responderá com as informações dos arquivos .CSV.
 
-# Exemplo de uso independente da API:
+# Exemplo de uso da biblioteca, independentemente da API:
 
 requirements.txt
 ```bash
@@ -65,8 +65,8 @@ for imp in importacoes:
 ```
 
 
-### Componentes
-A lógica do servidor está organizada em:
+### Componentes da biblioteca
+A lógica da biblioteca está organizada em:
 - **Classe SiteEmbrapa**: Centraliza a lógica de negócios e orquestra o acesso a dados.
 - **Repositórios**: Mantêm os dados carregados em memória, obtidos a partir de:
      - **Web Scraping**: Obtém informações diretamente do site da Embrapa.
