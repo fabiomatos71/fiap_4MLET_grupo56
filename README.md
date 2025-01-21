@@ -1,7 +1,7 @@
 
 # API Tech Challenge - Grupo 56 (4MLET)
 
-Este repositório contém a implementação de uma API desenvolvida em Python utilizando o framework Flask. A API foi criada como parte de um trabalho acadêmico do curso de pós-graduação em Machine Learning Engineering, da FIAP.
+Este repositório contém a implementação de uma API desenvolvida em Python utilizando o framework Flask. A API foi criada como parte de um trabalho acadêmico do curso de pós-graduação em Machine Learning Engineering, da FIAP - 4MLET
 
 A API é capaz de acessar, processar e fornecer dados relacionados à produção, processamento, comercialização, importação e exportação de produtos vitivinícolas no Brasil. Esses dados são obtidos a partir do site da **Embrapa** via **web scraping**, com suporte a arquivos **CSV** como fallback.
 
@@ -27,7 +27,7 @@ A lógica do servidor está organizada em:
 ## Funcionalidades da API
 
 ### Funcionamento padrão
-A aplicação servidora inicia sem nenhum dado carregado em memória. À medida que os endpoints relacionados à Produção, Processamento, Comercialização, Importação e Exportação são acessados pela aplicação cliente, a API realiza o web scraping no site da Embrapa, obtendo os dados específicos solicitados. Os dados obtidos são armazenados em memória, permitindo que futuras solicitações sejam atendidas de forma mais rápida, sem a necessidade de novas consultas ao site. Entretanto, caso a aplicação seja reiniciada, a memória é limpa, e as informações voltarão a ser buscadas diretamente no site da Embrapa.
+A aplicação servidora inicia sem nenhum dado carregado em memória. À medida que os endpoints relacionados à Produção, Processamento, Comercialização, Importação e Exportação são acessados pela aplicação cliente, a API realiza o web scraping no site da Embrapa, obtendo os dados específicos solicitados. Os dados obtidos são armazenados em memória, permitindo que futuras solicitações sejam atendidas de forma mais rápida, sem a necessidade de novas consultas ao site da Embrapa. Entretanto, caso a aplicação seja reiniciada, a memória é limpa, e as informações voltarão a ser buscadas diretamente no site da Embrapa.
 
 Como alternativa ao web scraping, a API conta com um conjunto de arquivos .CSV disponibilizados pela Embrapa, contendo todos os dados utilizados para alimentar o site oficial. Esses arquivos foram baixados e são mantidos na aplicação para garantir o funcionamento da API em cenários onde o site da Embrapa esteja offline ou instável. Nessas situações, a API utiliza os dados dos arquivos CSV para responder às requisições.
 
@@ -53,46 +53,15 @@ A API inclui uma interface de documentação interativa gerada pelo Swagger. Ace
 
 ## Requisitos
 
+- Python 3.12
+
 ### Dependências
 As principais dependências incluem:
-- Flask
-- Flask-JWT-Extended
-- Flasgger
-- Selenium
-- Webdriver Manager
+- Flask - API
+- Flask-JWT-Extended - JWT
+- Flasgger - Swagger
+- bs4 (BeautifulSoup) - web scraping
 
-### Instalação
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/fabiomatos71/fiap_4MLET_grupo56
-   cd fiap_4MLET_grupo56
-   ```
-2. Abra a pasta/projeto fiap_lib_grupo56 (biblioteca/fiap_lib_grupo56) no vs code e instale as dependências
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. (instruções do arquivo anotacoes.txt)
-- > Atualizar versão do pacote em setup.py (version='0.1.xx')
-   ```bash
-   python setup.py sdist bdist_wheel (gera o dist para ser publicado)
-   twine upload dist/* (publica o pacote em pypi.org.  Requer conta no site pypi.org)
-   ```
-4. Abra a pasta/projeto api_grupo56 (api_grupo56) no vs code e instale as dependências
-   ```bash
-   (atualize a entrada fiap_lib_grupo56==0.1.13 de requirements.txt com a versão mais recente de fiap_lib_grupo56)
-
-   pip install -r requirements.txt
-   ```
-5. Execute a API:
-   ```bash
-   python app.py
-   ```
-
-6. Acesse a documentação em:
-   ```
-   http://localhost:5000/swagger/
-   ```
 
 ## Estrutura de Arquivos
 
@@ -129,7 +98,7 @@ As principais dependências incluem:
 - **Teste**: Use as credenciais `username: 4MLET` e `password: 4MLET` para autenticação nos testes. (usar /login no swagger para gerar o token JWT)
 
 ## Autor
-- **Nome**: Fábio Vargas Matos
+- **Nome**: Fábio Vargas Matos - Grupo 56 - 4MLET
 - **Contato**: [fabiomatos@baneses.com.br](mailto:fabiomatos@baneses.com.br)
 
 ## Licença

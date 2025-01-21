@@ -1,8 +1,10 @@
-* Repositório no github
+* Principal local de documentação e código - github
+* -- Diagrama e demais especificações --
 https://github.com/fabiomatos71/fiap_4MLET_grupo56
 
 * link do módulo criado e publicado no pypi.org
 https://pypi.org/project/fiap-lib-grupo56/
 
-* link da publicação no Vercel
+* link da publicação no Vercel - em "produção"
+https://fiap-4mlet-grupo56.vercel.app/ (direciona para swagger da API)
 
