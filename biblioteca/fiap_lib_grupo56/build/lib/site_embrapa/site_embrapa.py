@@ -35,7 +35,7 @@ class SiteEmbrapa:
 
         logger.info(f"os.getcwd():{os.getcwd()}")
         logger.info("---------------- conteudo da pasta corrente ------------")
-        logger.info(f"os.listdir():{os.listdir()}")
+        logger.info(f"os.listdir('/var/task/site_embrapa'):{os.listdir(path='/var/task/site_embrapa')}")
         logger.info("---------------- fim conteudo da pasta corrente ------------")
         try:
             with as_file(files("site_embrapa.arquivos_csv").joinpath("producao.csv")) as caminho_csv:
