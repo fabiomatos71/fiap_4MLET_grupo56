@@ -77,6 +77,7 @@ As principais dependências incluem:
 ## biblioteca fiap_lib_grupo56
 - Abrir o visual code na pasta /biblioteca/fiap_lib_grupo56
 - atualizar os pacotes (pip install -r requirements.txt)
+- seguir as instruções do arquivo anotacoes.txt
 
 ## Estrutura de Arquivos
 
