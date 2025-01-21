@@ -50,10 +50,11 @@ Também é possível limpar o cache da API: /vitibrasil/limpa_cache.  Com o cach
       - Esvazia o cache de dados.  Tanto dados de consultas anteriores, que ficam em cache, como os dados possivelmente carregados dos arquivos .CSV serão limpos do cache.  A partir desta chamada, a API voltará a buscar os dados diretamente no site da Embrapa.  Novo cache começa a ser montado com as novas consultas de dados.
 
 3. **Produção**, **Processamento**, **Comercialização**, **Importação** e **Exportação**
-   - Consultar o swagger da API para detalhes dos endpoints
+   - Consultar o [swagger](https://fiap-4mlet-grupo56.vercel.app/swagger) da API para detalhes dos endpoints
 
 ### Documentação com Swagger
-A API inclui uma interface de documentação interativa gerada pelo Swagger. Acesse em `/swagger/`.
+A API inclui uma interface de documentação interativa gerada pelo Swagger, biblioteca Flasgger do python.
+https://fiap-4mlet-grupo56.vercel.app/swagger
 
 ## Requisitos
 
