@@ -17,6 +17,54 @@ https://pypi.org/project/fiap-lib-grupo56/
    pip install fiap_lib_grupo56
 ```
 
+### Biblioteca autônoma, para atender às demandas da API
+
+A **fiap_lib_grupo56** foi desenvolvida para ser autônoma na terafa de obter, tratar, fazer cache e realizar consultas elaboradas acerca dos dados expostos no site da Embrapa - http://vitibrasil.cnpuv.embrapa.br/
+
+Desta forma, apesar de não ser o objetivo para qual foi desenvolvida, a biblioteca pode ser utilizada para se obter os dados do site da Embrapa, de forma independente do uso da API.  A **classe SiteEmbrapa** é a porta de entrada da **fiap_lib_grupo56** e dá acesso a uma gama de métodos de consulta às informações da Embrapa.  Tudo encapsulado na biblioteca, inclusive os arquivos .CSV para fallback.  Até mesmo com o site da Embrapa fora do ar, a biblioteca responderá com as informações dos arquivos .CSV.
+
+# Exemplo de uso independente da API:
+
+requirements.txt
+```bash
+requests==2.32.3
+bs4==4-0.0.2
+fiap_lib_grupo56
+```
+
+
+```bash
+pip install -r requirements.txt
+```
+
+teste.ipynb
+```bash
+
+import locale
+from site_embrapa import SiteEmbrapa
+from modelo_dados.processamento import EnumTipoUva_proc, ProcessamentoAnual
+from modelo_dados.importacaoExportacao import EnumCategoria_im_ex
+
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+site_embrapa = SiteEmbrapa()
+
+ano = 2017
+processamentos = site_embrapa.obterProcessamentoPorAnoTipoUva(ano, EnumTipoUva_proc.UVASDEMESA)
+print(f"==== Processamento de cultivares de uva de mesa no ano de {ano} ====")
+for proc in processamentos:
+    print(f"{proc.ano} - {proc.cultivar.nome} - {proc.cultivar.categoria.nome} - {proc.quantidade:n}")
+
+ano = 1973
+print("")
+print(f"==== Importações de suco de uva no ano de {ano} ====")
+importacoes = site_embrapa.obterImportacaoPorAnoCategoria(ano, EnumCategoria_im_ex.SUCODEUVA)
+for imp in importacoes:
+    if imp.valor > 0 or imp.quantidade > 0:
+        print(f"{imp.ano} - {imp.categoria.value} - {imp.pais.nome} - {imp.quantidade:n}- R${imp.valor:n}")
+
+```
+
+
 ### Componentes
 A lógica do servidor está organizada em:
 - **Classe SiteEmbrapa**: Centraliza a lógica de negócios e orquestra o acesso a dados.
@@ -35,7 +83,7 @@ Todas as chamadas recebidas pela API serão repassadas para a classe SiteEmbrapa
 
 A camada da API, fora da biblioteca, trata das questões de segurança, exigência de parâmetros nas chamadas, swagger etc...
 
-A camada da biblioteca trada da obtenção, tratamento e fornecimento dos dados.
+A camada da biblioteca trata da obtenção, tratamento e fornecimento dos dados.
 
 As informações relacionadas à Produção, Processamento, Comercialização, Importação e Exportação são obtidos ou através do web scrapping ou através do fallback nos arquivos .CSV, previamente baixados e empacotados dentro da biblioteca.
 
