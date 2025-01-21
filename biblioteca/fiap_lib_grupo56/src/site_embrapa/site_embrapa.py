@@ -2,7 +2,7 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 from typing import List
-from importlib.resources import files
+from importlib.resources import files, as_file
 from modelo_dados.producao import Categoria_prod, Produto_prod, ProdutividadeAnual
 from modelo_dados.producao import RepositorioCategorias_prod, RepositorioProdutos_prod, RepositorioProdutividadesAnuais
 from modelo_dados.processamento import EnumTipoUva_proc, Categoria_proc, Cultivar_proc, ProcessamentoAnual
@@ -171,41 +171,42 @@ class SiteEmbrapa:
 
     def carregaRepoProdutividadeFromArquivoCSV(self):
         # caminho_csv = "./arquivos_csv/producao.csv"
-        caminho_csv = files("site_embrapa.arquivos_csv").joinpath("producao.csv")
+        # caminho_csv = files("site_embrapa.arquivos_csv").joinpath("producao.csv")
         self.repositorio_categorias_prod = RepositorioCategorias_prod()
         self.repositorio_produtos_prod = RepositorioProdutos_prod()
         self.repositorio_produtividades = RepositorioProdutividadesAnuais()
         categoria_atual = None
-        with open(caminho_csv, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file, delimiter=';')
-            
-            # Itera sobre cada linha do arquivo CSV
-            for linha in reader:
-                nome_categoria = linha.get("control")
-                nome_produto = linha.get("produto")
-
-                if not nome_categoria or not nome_produto:
-                    continue  # Pula linhas com dados incompletos
+        with as_file(files("site_embrapa.arquivos_csv").joinpath("producao.csv")) as caminho_csv:
+            with open(caminho_csv, mode='r', encoding='utf-8') as file:
+                reader = csv.DictReader(file, delimiter=';')
                 
-                if nome_categoria == nome_produto:
-                    # Verifica se a categoria já existe no repositório
-                    categoria_atual = self.repositorio_categorias_prod.buscar_categoria_por_nome(nome_categoria)
-                    if not categoria_atual:
-                        categoria_atual = Categoria_prod(nome_categoria)
-                        self.repositorio_categorias_prod.adicionar_categoria(categoria_atual)
-                else:
-                    # Verifica se o produto já existe no repositório
-                    produto = self.repositorio_produtos_prod.buscar_produto_por_nome_categoria(nome_produto, categoria_atual)
-                    if not produto:
-                        produto = Produto_prod(nome_produto, categoria_atual)
-                        self.repositorio_produtos_prod.adicionar_produto(produto)
+                # Itera sobre cada linha do arquivo CSV
+                for linha in reader:
+                    nome_categoria = linha.get("control")
+                    nome_produto = linha.get("produto")
+
+                    if not nome_categoria or not nome_produto:
+                        continue  # Pula linhas com dados incompletos
                     
-                    # Cria instâncias de ProdutividadeAnual para os anos disponíveis
-                    for coluna, valor in linha.items():
-                        if coluna.isdigit():  
-                            ano = int(coluna)
-                            produtividade = ProdutividadeAnual(ano, valor, produto)
-                            self.repositorio_produtividades.adicionar_produtividade(produtividade)
+                    if nome_categoria == nome_produto:
+                        # Verifica se a categoria já existe no repositório
+                        categoria_atual = self.repositorio_categorias_prod.buscar_categoria_por_nome(nome_categoria)
+                        if not categoria_atual:
+                            categoria_atual = Categoria_prod(nome_categoria)
+                            self.repositorio_categorias_prod.adicionar_categoria(categoria_atual)
+                    else:
+                        # Verifica se o produto já existe no repositório
+                        produto = self.repositorio_produtos_prod.buscar_produto_por_nome_categoria(nome_produto, categoria_atual)
+                        if not produto:
+                            produto = Produto_prod(nome_produto, categoria_atual)
+                            self.repositorio_produtos_prod.adicionar_produto(produto)
+                        
+                        # Cria instâncias de ProdutividadeAnual para os anos disponíveis
+                        for coluna, valor in linha.items():
+                            if coluna.isdigit():  
+                                ano = int(coluna)
+                                produtividade = ProdutividadeAnual(ano, valor, produto)
+                                self.repositorio_produtividades.adicionar_produtividade(produtividade)
 
     def carregaRepoComercializacaoFromArquivoCSV(self):
         # caminho_csv = "./arquivos_csv/comercio.csv"
