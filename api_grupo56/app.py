@@ -66,7 +66,7 @@ swagger_config = {
 swagger_template = {
     "info": {
         "title": "Grupo 56 - 4MLET - API Tech Challenge",
-        "description": "Documentação da API do Tech Challenge para obtenção de dados a partir do site http://vitibrasil.cnpuv.embrapa.br/",
+        "description": "Documentação da API do Tech Challenge para obtenção de dados a partir do site http://vitibrasil.cnpuv.embrapa.br/ <br/><br/>" + "Documentação completa do projeto em https://github.com/fabiomatos71/fiap_4MLET_grupo56",
         "version": "1.0.0",
         "contact": {
             "responsibleOrganization": "Grupo56 4MLET",

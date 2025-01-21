@@ -1,5 +1,5 @@
 
-# API Tech Challenge - Grupo 56 (4MLET)
+# API Tech Challenge - Grupo 56 (4MLET) - Biblioteca fiap_lib_grupo56
 
 Este repositório contém a implementação de uma API desenvolvida em Python utilizando o framework Flask. A API foi criada como parte de um trabalho acadêmico do curso de pós-graduação em Machine Learning Engineering, da FIAP.
 

@@ -17,7 +17,7 @@ A API é projetada para ser consumida por uma aplicação cliente, que pode faze
 ### Camada Servidora
 A lógica do servidor está organizada em:
 - **API**: Gerencia o roteamento, autenticação via JWT e a interface com o cliente.
-- **Biblioteca fiap_lib_grupo56**: Contém classes para orquestração da lógica de negócio e manipulação de dados, incluindo:
+- [**Biblioteca fiap_lib_grupo56**](biblioteca/fiap_lib_grupo56 "Detalhamento da biblioteca"): Contém classes para orquestração da lógica de negócio e manipulação de dados, incluindo:
   - **Classe SiteEmbrapa**: Centraliza a lógica de negócios e orquestra o acesso a dados.
   - **Repositórios**: Mantêm os dados carregados em memória.  Obtém os dados a partir de:
      - **Web Scraping**: Obtém informações diretamente do site da Embrapa.
