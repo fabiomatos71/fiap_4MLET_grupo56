@@ -38,7 +38,7 @@ class SiteEmbrapa:
         logger.info(f"os.listdir('/var/task/site_embrapa'):{os.listdir(path='/var/task/site_embrapa/arquivos_csv')}")
         logger.info("---------------- fim conteudo da pasta corrente ------------")
         try:
-            with as_file(files("site_embrapa.arquivos_csv").joinpath("producao.csv")) as caminho_csv:
+            with as_file(files("site_embrapa.arquivos_csv").joinpath("Producao.csv")) as caminho_csv:
                 logger.info(f"XXXX - caminho_csv:{caminho_csv}")
                 with open(caminho_csv, mode='r', encoding='utf-8') as file:
                     content = file.read() 
