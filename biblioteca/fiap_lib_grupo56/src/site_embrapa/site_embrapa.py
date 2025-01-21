@@ -25,10 +25,10 @@ class SiteEmbrapa:
 
     def inicializa_repositorios(self):
         import os
-        import site_embrapa.logs as logs
+        import site_embrapa.vercel_log as vl
 
         # Setup logging
-        logger = logs.setup_logging()
+        logger = vl.VerceLLogger()
 
         # Log application start
         logger.info('Inicio aplicação')

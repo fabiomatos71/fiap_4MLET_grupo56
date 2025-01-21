@@ -12,5 +12,5 @@ src/modelo_dados/importacaoExportacao.py
 src/modelo_dados/processamento.py
 src/modelo_dados/producao.py
 src/site_embrapa/__init__.py
-src/site_embrapa/logs.py
 src/site_embrapa/site_embrapa.py
+src/site_embrapa/vercel_log.py
