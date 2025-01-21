@@ -68,6 +68,15 @@ As principais dependências incluem:
 - bs4 (BeautifulSoup) - web scraping
 - fiap_lib_grupo56
 
+### Para compilar
+
+## API
+- Abrir o visual code na pasta /api_grupo56
+- atualizar os pacotes (pip install -r requirements.txt)
+
+## biblioteca fiap_lib_grupo56
+- Abrir o visual code na pasta /biblioteca/fiap_lib_grupo56
+- atualizar os pacotes (pip install -r requirements.txt)
 
 ## Estrutura de Arquivos
 

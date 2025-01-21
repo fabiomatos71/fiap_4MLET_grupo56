@@ -1,2 +1,10 @@
+# Ignorar pastas de build
+build/
+dist/
+
+# Ignorar arquivos gerados por setup.py
+*.egg-info
+
+# Entregas da pos-FIAP
 FIAP_4MLET_FabioVargasMatos.mp4
 fiap_4MLET_grupo56.zip
