@@ -1,0 +1,10 @@
+2025-01-21 13:57:24 - my_application - INFO - Inicio aplicação
+2025-01-21 13:57:24 - my_application - DEBUG - This is a debug message
+2025-01-21 13:57:24 - my_application - INFO - Application is running normally
+2025-01-21 13:57:24 - my_application - WARNING - Something might be wrong
+2025-01-21 13:57:24 - my_application - ERROR - Attempted to divide by zero
+2025-01-21 13:57:26 - my_application - INFO - Inicio aplicação
+2025-01-21 13:57:26 - my_application - DEBUG - This is a debug message
+2025-01-21 13:57:26 - my_application - INFO - Application is running normally
+2025-01-21 13:57:26 - my_application - WARNING - Something might be wrong
+2025-01-21 13:57:26 - my_application - ERROR - Attempted to divide by zero
