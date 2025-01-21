@@ -1,1 +1,1 @@
-include site_embrapa/arquivos_csv/*.csv
+include src/site_embrapa/arquivos_csv/*.csv

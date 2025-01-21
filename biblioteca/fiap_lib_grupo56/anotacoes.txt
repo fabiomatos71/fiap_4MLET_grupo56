@@ -13,4 +13,4 @@
 * Para subir para o Pypi
 
 # twine upload dist/*
-# twine upload dist/fiap_lib_grupo56-0.3.8*
+# twine upload dist/fiap_lib_grupo56-0.3.27*
